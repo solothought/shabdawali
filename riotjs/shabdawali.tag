@@ -1,7 +1,5 @@
 <shabdawali>
-    <style>
-    </style>
-    <span ref="typing-paper"></span>
+    <p ref="typing-paper"></p>
     <script>
         var speed = 120;
         var interval = 2000;
@@ -13,37 +11,37 @@
         var rotate = this.opts.rotate || true;
         var shouldDelete = this.opts.deleteEffect || true;
 
-        var deleteText = function() {
+        var deleteText = function(cLine) {
             var txt = targetEl.text();
             if(txt.length === 0){
                 typeNext();
             }else{
-                txt = currentLine().substring(0, txt.length - 1);
+                txt = cLine.substring(0, txt.length - 1);
                 targetEl.text(txt);
                 setTimeout(function() {
-                    deleteText();
+                    deleteText(cLine);
                 }, deleteSpeedArr[ currentLineIndex ]);
             }
         };
 
-        var typeText = function() {
+        var typeText = function(cLine) {
             var txt = targetEl.text();
-            var cLine = currentLine();
+            //var cLine = currentLine();
             if(cLine){
-                if(txt.length === cLine.length){
+                if(txt.length === cLine.length){//complete line has been typed
                     if(shouldDelete){
                         setTimeout(function() {
-                            deleteText();
+                            deleteText(cLine);
                         }, interval);
                     }else{
                         typeNext();
                     }
-                }else{
+                }else{//still typing
                     txt = cLine.substring(0, txt.length + 1);
                     targetEl.text(txt);
                     setTimeout(function() {
-                        typeText();
-                    }, typingSpeedArr[ currentLineIndex ] );
+                        typeText(cLine);
+                    }, typingSpeedArr[ currentLineIndex - 1 ] );
                 }
             }
         };
@@ -51,15 +49,12 @@
         var currentLineIndex = 0;
 
         function nextLine(){
-            return lines[ currentLineIndex++ ];
-        }
-
-        function currentLine(){
             if(currentLineIndex === lines.length){
                 if(rotate) currentLineIndex = 0;
-                else return;
             }
-            return lines[ currentLineIndex ];
+            var line =  lines[ currentLineIndex ];
+            currentLineIndex++;
+            return line;
         }
 
         function startTyping() {
@@ -81,7 +76,7 @@
             line && (
                 setTimeout(function() {
                     targetEl.text('');
-                    typeText() ;
+                    typeText(line) ;
                 }, interval)
             );
         }
