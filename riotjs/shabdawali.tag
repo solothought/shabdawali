@@ -1,4 +1,4 @@
-<typewriter>
+<shabdawali>
     <style>
     </style>
     <span ref="typing-paper"></span>
@@ -93,4 +93,4 @@
             targetEl = $(this.refs["typing-paper"]);
         });
     </script>
-</typewriter>
+</shabdawali>

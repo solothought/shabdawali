@@ -3,15 +3,15 @@
 1. Include tag file on your page
 
 ```html
-<typewriter></typewriter>
+<shabdawali></shabdawali>
 
-<script src="tags/typewriter.tag.html" type="riot/tag"></script> 
+<script src="tags/shabdawali.tag.html" type="riot/tag"></script> 
 ```
 
 **Note**: You'll have to either compile the tag file or include riot compile on the page before mounting it.
 
 ```js
-    riot.mount('typewriter', { 
+    riot.mount('shabdawali', { 
         lines : lines,
         deleteEffect : true, //default is true
         rotate : true, //default is true
