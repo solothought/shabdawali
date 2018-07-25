@@ -16,6 +16,7 @@
             if(txt.length === 0){
                 typeNext();
             }else{
+                onChar("BS");
                 txt = cLine.substring(0, txt.length - 1);
                 targetEl.text(txt);
                 setTimeout(function() {
@@ -38,6 +39,7 @@
                     }
                 }else{//still typing
                     txt = cLine.substring(0, txt.length + 1);
+                    onChar( txt.substr(txt.length - 1, 1) );
                     targetEl.text(txt);
                     setTimeout(function() {
                         typeText(cLine);
@@ -53,6 +55,7 @@
                 if(rotate) currentLineIndex = 0;
             }
             var line =  lines[ currentLineIndex ];
+            onLine("CR", currentLineIndex, line);
             currentLineIndex++;
             return line;
         }
@@ -83,6 +86,8 @@
         
         var targetEl ;
         var lines = this.opts.lines;
+        var onChar = this.opts.onCharChange || function(){};
+        var onLine = this.opts.onLineChange || function(){};
         this.on('mount', function(){
             setTimeout(startTyping, delay);
             targetEl = $(this.refs["typing-paper"]);
