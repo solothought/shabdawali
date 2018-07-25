@@ -1,5 +1,7 @@
 # शब्दावली (shabdawali)
-Typewriting effect js plugin
+For awesome typewriting effect
+
+<div align="center"><img src="static/shabdawali_logo.png"></div>
 
 ## Features
 
