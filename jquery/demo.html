@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <script src="demo-content/jquery-3.2.1.min.js"></script>
+        <script src="shabdawali.js" ></script>
+
+        <style>
+            #typingBox{
+                height: 400px;
+                text-align: center;
+                width: 45%;
+                display: flex;
+                border: 1px solid black;
+                align-items: center;
+                padding: 15px;
+                float: left;
+                margin: 10px;
+            }
+            #textBox{
+                height: 400px;
+                width: 45%;
+                border: 1px solid black;
+                float: right;
+                padding: 15px;
+                margin: 10px;
+            }
+            #updateText{
+                float: left;
+            }
+            #keyChar{
+                width: 100px;
+                height: 100px;
+                border: 1px solid gray;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="typingBox" >
+            
+        </div>
+        <div><button id="updateText">&lt;&lt;</button></div>
+        <div id="textBox" >
+            <textarea style="width: 100%; height: 100%; border: none;"></textarea>
+        </div>
+        <div style="clear: both"></div>
+
+        <div style="text-align: center">
+            <span id="keyChar"></span>
+        </div>
+
+
+        <script>
+            var mylines = [
+                'Welcome to शब्दावली (shabdawali)',
+                'शब्दावली (shabdawali) can help you to decorate your page and posts with amazing typing effects',
+                'You can modify the effect with different options',
+            ];
+
+            $(document).ready(function(){
+                $("#typingBox").shabdawali({lines : mylines});
+
+                $("#updateText").click(function(){
+                    var text = $("#textBox textarea").val();
+                    var textlines = text.split("\n");
+                    $("#typingBox").shabdawali({
+                        lines : mylines,
+                        onCharChange : function(ch){
+                            $("#keyChar").text(ch);
+                        }
+                    });
+                });
+            })
+        </script>
+    </body>
+</html>
