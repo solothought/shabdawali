@@ -2,7 +2,8 @@
     <p ref="typing-paper"></p>
     <script>
         var speed = 120;
-        var interval = 2000;
+        var timeToReadAWord = 80;
+        var intervalBetween2Lines = 2000;
         var delay = 100;
 
         var typingSpeedArr = [];
@@ -21,7 +22,7 @@
                 targetEl.text(txt);
                 setTimeout(function() {
                     deleteText(cLine);
-                }, deleteSpeedArr[ currentLineIndex ]);
+                }, deleteSpeedArr[ currentLineIndex - 1]);
             }
         };
 
@@ -31,9 +32,12 @@
             if(cLine){
                 if(txt.length === cLine.length){//complete line has been typed
                     if(shouldDelete){
+                        var gape = timeToReadAWord * (cLine.length / 4);
+                        if(gape < 2000) gape = 2000;
+
                         setTimeout(function() {
                             deleteText(cLine);
-                        }, interval);
+                        }, gape);
                     }else{
                         typeNext();
                     }
@@ -64,8 +68,9 @@
 
             for(var i = 0; i < lines.length; i++){
                 var line = lines[i];
-                typingSpeedArr.push( speed - line.length );
-                if( typingSpeedArr[i] < 1 ) typingSpeedArr[i] = 2;
+                /*  typingSpeedArr.push( speed - line.length );
+                if( typingSpeedArr[i] < 1 ) typingSpeedArr[i] = 4; */
+                typingSpeedArr[i] = 50;
 
                 deleteSpeedArr.push( (speed / 2)  - line.length );
                 if( deleteSpeedArr[i] < 1 ) deleteSpeedArr[i] = 2;
@@ -80,7 +85,7 @@
                 setTimeout(function() {
                     targetEl.text('');
                     typeText(line) ;
-                }, interval)
+                }, intervalBetween2Lines)
             );
         }
         
