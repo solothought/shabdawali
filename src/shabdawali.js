@@ -11,6 +11,8 @@ function Shabdawali(targetEl, opts){
     this.pauseBeforeNext = opts.pauseBeforeNext || 1000; 
     this.delay = opts.delay || 0; //initial delay
 
+    this.typo = opts.typo || false;
+
     this.deleteSpeed = opts.deleteSpeed || (this.speed / 2);
     this.deleteSpeedArr = [];
 
@@ -31,6 +33,8 @@ function Shabdawali(targetEl, opts){
         this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
+
+    this.currentLetterIndex = 0;
 }
 
 Shabdawali.prototype.start = function(){
@@ -38,13 +42,11 @@ Shabdawali.prototype.start = function(){
 }
 
 Shabdawali.prototype.deleteText = function(cLine){
-    var txt = this.element.textContent;
-    if(txt.length === 0){
+    if(this.currentLetterIndex === 0){
         this.typeNext();
     }else{
         this.onChar("BS");
-        txt = this.trimmedText(cLine, txt.length - 1);
-        this.element.textContent = txt;
+        this.element.textContent = this.trimmedText(cLine, --this.currentLetterIndex);
         var that = this;
         setTimeout(function() {
             that.deleteText(cLine);
@@ -53,9 +55,8 @@ Shabdawali.prototype.deleteText = function(cLine){
 }
 
 Shabdawali.prototype.typeText = function(cLine){
-    var txt = this.element.textContent;
     if(cLine){
-        if(txt.length === cLine.length){//complete line has been typed
+        if(this.currentLetterIndex === cLine.length){//complete line has been typed
             if(this.deleteEffect){
                 var gape = this.pauseBeforeDelete;
                 if(this.dynamicPauseBeforeDelete){
@@ -70,8 +71,9 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.typeNext();
             }
         }else{//still typing
-            txt = cLine.substring(0, txt.length + 1);
-            this.onChar( txt.substr(txt.length - 1, 1) );
+            //"amit kumar gupta".indexOf(' ', 5)
+            var txt = cLine.substring(0, ++this.currentLetterIndex);
+            this.onChar( txt.substr(this.currentLetterIndex - 1) );
             this.element.textContent  = txt;
             var that = this;
             setTimeout(function() {
@@ -92,6 +94,7 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
+    //this.currentLetterIndex = 0;
     var line = this.nextLine();
     var that = this;
     line && (
