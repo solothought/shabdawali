@@ -1,9 +1,12 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.shabdawali = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+var {shuffle, replaceOn} = require('./util');
+
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
     this.lines = opts.lines;
     this.onChar = opts.onCharChange || function(){};
     this.onLine = opts.onLineChange || function(){};
+    this.nextWord = opts.nextWord || function(){};
 
     this.speed = opts.speed || 70;
     this.timeToReadAWord = 80;
@@ -12,7 +15,7 @@ function Shabdawali(targetEl, opts){
     this.pauseBeforeNext = opts.pauseBeforeNext || 1000; 
     this.delay = opts.delay || 0; //initial delay
 
-    this.typo = opts.typo || false;
+    this.typoEffect = opts.typoEffect || false;
 
     this.deleteSpeed = opts.deleteSpeed || (this.speed / 2);
     this.deleteSpeedArr = [];
@@ -27,15 +30,40 @@ function Shabdawali(targetEl, opts){
     }
     
 
-    this.currentLineIndex = 0;
     //updateDynamicDeleteSpeed
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
         this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
-
+    
+    this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
+    this.nextWordIndex = 0;
+    this.typo = {//TO DO make it configurable
+        max : 1,
+        minWordLength : 5,
+        extendedRange : 3,
+        skip : 2,
+        randomFactor : 4 //higher 
+    }
+    this.typoCount = 0;
+    this.startCorrectingAt = -1;
+}
+
+//Check if the given word should be used for spelling correction effects
+Shabdawali.prototype.makeTypo = function(word){//TO DO make it configurable
+    return shuffle( word.substr( this.typo.skip ));
+}
+
+Shabdawali.prototype.checkIfFitsForTypoEffect = function(word){//TO DO make it configurable
+    if (Math.floor((Math.random() * this.typo.randomFactor) + 1) !== 2){
+        return false;
+    }
+    
+    if(word.length >= this.typo.minWordLength){
+        return true;
+    }
 }
 
 Shabdawali.prototype.start = function(){
@@ -43,21 +71,30 @@ Shabdawali.prototype.start = function(){
 }
 
 Shabdawali.prototype.deleteText = function(cLine){
-    //var txt = this.element.textContent;
-    if(this.currentLetterIndex === 0){
+    if(this.correctingText && this.typoRange === 0){
+        this.typeText( this.lines[this.currentLineIndex - 1] );
+        this.correctingText = false;
+    }else if(this.correctingText && this.typoRange > 0){
+        this.delete(cLine, this.speed);
+        this.typoRange--;
+    }else if(this.currentLetterIndex === 0){
         this.typeNext();
     }else{
-        this.onChar("BS");
-        this.element.textContent = this.trimmedText(cLine, --this.currentLetterIndex);
-        var that = this;
-        setTimeout(function() {
-            that.deleteText(cLine);
-        }, this.deleteSpeedArr[ this.currentLineIndex -1 ]);
+        this.delete(cLine, this.deleteSpeedArr[ this.currentLineIndex -1 ]);
     }
 }
 
+Shabdawali.prototype.delete = function(cLine, speed){
+    this.onChar("BS");
+    this.element.textContent = this.trimmedText(cLine, --this.currentLetterIndex);
+    var that = this;
+    setTimeout(function() {
+        that.deleteText(cLine);
+    }, speed);
+}
+
+
 Shabdawali.prototype.typeText = function(cLine){
-    //var txt = this.element.textContent;
     if(cLine){
         if(this.currentLetterIndex === cLine.length){//complete line has been typed
             if(this.deleteEffect){
@@ -74,14 +111,34 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.typeNext();
             }
         }else{//still typing
-            //"amit kumar gupta".indexOf(' ', 5)
-            var txt = cLine.substring(0, ++this.currentLetterIndex);
-            this.onChar( txt.substr(this.currentLetterIndex - 1) );
-            this.element.textContent  = txt;
-            var that = this;
-            setTimeout(function() {
-                that.typeText(cLine);
-            }, this.speed );
+            if( this.typoEffect && this.currentLetterIndex >= this.nextWordIndex && this.nextWordIndex > -1 && this.typoCount < this.typo.max){
+                var nextWordIndex = cLine.indexOf(' ', this.nextWordIndex+1)
+                var word = cLine.substr(this.nextWordIndex, nextWordIndex - this.nextWordIndex);
+                this.nextWord(word);//callBack
+                if( this.checkIfFitsForTypoEffect(word) ){
+                    var typoWord = this.makeTypo( word ) ;
+                    cLine = replaceOn(cLine, this.currentLetterIndex + 1 , typoWord);
+                    this.typoCount++;
+                    this.typoRange =  this.typo.skip + typoWord.length + this.typo.extendedRange;
+                    this.startCorrectingAt = this.currentLetterIndex + this.typoRange;
+                }
+                this.nextWordIndex = nextWordIndex;
+            }
+
+            if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex){
+                this.startCorrectingAt = -1;
+                this.correctingText = true;
+                this.deleteText(cLine);
+            }else{
+                var txt = cLine.substring(0, ++this.currentLetterIndex);
+                this.onChar( txt.substr(this.currentLetterIndex - 1) );
+                this.element.textContent  = txt;
+                var that = this;
+                setTimeout(function() {
+                    that.typeText(cLine);
+                }, this.speed );
+            }
+
         }
     }
 }
@@ -98,6 +155,8 @@ Shabdawali.prototype.nextLine = function(){
 
 Shabdawali.prototype.typeNext = function(){
     //this.currentLetterIndex = 0;
+    this.nextWordIndex = 0;
+    this.typoCount = 0;
     var line = this.nextLine();
     var that = this;
     line && (
@@ -111,6 +170,26 @@ Shabdawali.prototype.typeNext = function(){
 module.exports = function(targetEl, opts){
     return new Shabdawali(targetEl, opts);
 }
+
+},{"./util":2}],2:[function(require,module,exports){
+
+
+module.exports.replaceOn = function(line, start, str) {
+    return line.substr(0,start) + str + line.substr(start+str.length);
+}
+module.exports.shuffle = function(word) {
+    var a = word.split(""),
+        n = a.length;
+
+    for (var i = n - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+        }
+    return a.join("");
+}
+
 
 },{}]},{},[1])(1)
 });

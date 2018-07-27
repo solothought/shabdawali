@@ -38,6 +38,7 @@
         <div>
             <p id="typingBox2" ></p>
         </div>
+        <div id="letter"></div>
 
         <script>
             var mylines = [
@@ -48,7 +49,7 @@
 
 
             var mylines2 = [
-                'This is another instance',
+                '<b>This<b> is another instance',
                 'शब्दावली (shabdawali) supports multiple instances, dynamic speed, delete and backspacing effects',
                 'and callbacks',
             ];
@@ -57,7 +58,17 @@
                 var targetEl = document.getElementById("typingBox");
                 var targetEl2 = document.getElementById("typingBox2");
 
-                var first = shabdawali(targetEl,{lines : mylines});
+                var first = shabdawali(targetEl,{
+                    lines : mylines,
+                    onCharChange : function(ch){
+                        $("#letter").text(ch);
+                    },
+                    speed : 100,
+                    nextWord : function(w){
+                        //console.log(w);
+                    },
+                    typoEffect : true
+                });
                 var second = shabdawali(targetEl2,{lines : mylines2});
 
                 first.start();
