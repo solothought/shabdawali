@@ -1,0 +1,28 @@
+{
+  "name": "shabdawali",
+  "version": "1.0.0",
+  "description": "Amazing typping effects",
+  "main": "src/shabdawali.js",
+  "scripts": {
+    "bundle": "browserify src/shabdawali.js -s shabdawali > dist/shabdawali.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitguptagwl/shabdawali.git"
+  },
+  "keywords": [
+    "typing",
+    "typo",
+    "delete",
+    "correction"
+  ],
+  "author": "Amit Kumar Gupta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amitguptagwl/shabdawali/issues"
+  },
+  "homepage": "https://github.com/amitguptagwl/shabdawali#readme",
+  "dependencies": {
+    "browserify": "^16.2.2"
+  }
+}
