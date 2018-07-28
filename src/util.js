@@ -3,6 +3,7 @@
 module.exports.replaceOn = function(line, start, str) {
     return line.substr(0,start) + str + line.substr(start+str.length);
 }
+
 module.exports.shuffle = function(word) {
     var a = word.split(""),
         n = a.length;
@@ -16,3 +17,8 @@ module.exports.shuffle = function(word) {
     return a.join("");
 }
 
+module.exports.commonStartingString = function(line1,line2) {
+    for(var i=0; i < line1.length; i++){
+        if(line1[i] !== line2[i]) return i;
+    }
+}

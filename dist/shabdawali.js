@@ -1,5 +1,5 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.shabdawali = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-var {shuffle, replaceOn} = require('./util');
+var {shuffle, replaceOn, commonStartingString} = require('./util');
 
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
@@ -19,6 +19,7 @@ function Shabdawali(targetEl, opts){
 
     this.deleteSpeed = opts.deleteSpeed || (this.speed / 2);
     this.deleteSpeedArr = [];
+    this.deleteUpto = [];
 
     this.repeat = opts.repeat || true;
     this.deleteEffect = opts.deleteEffect || true;
@@ -30,12 +31,25 @@ function Shabdawali(targetEl, opts){
     }
     
 
-    //updateDynamicDeleteSpeed
+    //updateDynamicDeleteSpeed and deleteUpto
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
         this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
+
+        if(opts.replacable){
+            if(i < this.lines.length - 1){
+                var commonUpto = commonStartingString(line, this.lines[ i+1 ])
+                this.deleteUpto.push(commonUpto || 0);
+            }else{
+                this.deleteUpto.push(0);//delete upto 1st char
+            }
+        }else{
+            this.deleteUpto.push(0);//delete upto 1st char
+        }
     }
+
+    
     
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
@@ -77,7 +91,7 @@ Shabdawali.prototype.deleteText = function(cLine){
     }else if(this.correctingText && this.typoRange > 0){
         this.delete(cLine, this.speed);
         this.typoRange--;
-    }else if(this.currentLetterIndex === 0){
+    }else if(this.currentLetterIndex === this.deleteUpto[this.currentLineIndex - 1 ] ){
         this.typeNext();
     }else{
         this.delete(cLine, this.deleteSpeedArr[ this.currentLineIndex -1 ]);
@@ -130,9 +144,9 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.correctingText = true;
                 this.deleteText(cLine);
             }else{
-                var txt = cLine.substring(0, ++this.currentLetterIndex);
-                this.onChar( txt.substr(this.currentLetterIndex - 1) );
-                this.element.textContent  = txt;
+                var char = cLine.substr( this.currentLetterIndex++ , 1);
+                this.onChar( char );
+                this.element.textContent  += char;
                 var that = this;
                 setTimeout(function() {
                     that.typeText(cLine);
@@ -154,14 +168,14 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
-    //this.currentLetterIndex = 0;
     this.nextWordIndex = 0;
     this.typoCount = 0;
     var line = this.nextLine();
+    this.currentLetterIndex = this.deleteUpto[ this.currentLineIndex - 2 ] || 0;
     var that = this;
     line && (
         setTimeout(function() {
-            that.element.textContent = '';
+            //that.element.textContent = '';
             that.typeText(line) ;
         }, this.pauseBeforeNext)
     );
@@ -177,6 +191,7 @@ module.exports = function(targetEl, opts){
 module.exports.replaceOn = function(line, start, str) {
     return line.substr(0,start) + str + line.substr(start+str.length);
 }
+
 module.exports.shuffle = function(word) {
     var a = word.split(""),
         n = a.length;
@@ -190,6 +205,10 @@ module.exports.shuffle = function(word) {
     return a.join("");
 }
 
-
+module.exports.commonStartingString = function(line1,line2) {
+    for(var i=0; i < line1.length; i++){
+        if(line1[i] !== line2[i]) return i;
+    }
+}
 },{}]},{},[1])(1)
 });

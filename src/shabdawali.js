@@ -1,4 +1,4 @@
-var {shuffle, replaceOn} = require('./util');
+var {shuffle, replaceOn, commonStartingString} = require('./util');
 
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
@@ -18,6 +18,7 @@ function Shabdawali(targetEl, opts){
 
     this.deleteSpeed = opts.deleteSpeed || (this.speed / 2);
     this.deleteSpeedArr = [];
+    this.deleteUpto = [];
 
     this.repeat = opts.repeat || true;
     this.deleteEffect = opts.deleteEffect || true;
@@ -29,12 +30,25 @@ function Shabdawali(targetEl, opts){
     }
     
 
-    //updateDynamicDeleteSpeed
+    //updateDynamicDeleteSpeed and deleteUpto
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
         this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
+
+        if(opts.replacable){
+            if(i < this.lines.length - 1){
+                var commonUpto = commonStartingString(line, this.lines[ i+1 ])
+                this.deleteUpto.push(commonUpto || 0);
+            }else{
+                this.deleteUpto.push(0);//delete upto 1st char
+            }
+        }else{
+            this.deleteUpto.push(0);//delete upto 1st char
+        }
     }
+
+    
     
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
@@ -76,7 +90,7 @@ Shabdawali.prototype.deleteText = function(cLine){
     }else if(this.correctingText && this.typoRange > 0){
         this.delete(cLine, this.speed);
         this.typoRange--;
-    }else if(this.currentLetterIndex === 0){
+    }else if(this.currentLetterIndex === this.deleteUpto[this.currentLineIndex - 1 ] ){
         this.typeNext();
     }else{
         this.delete(cLine, this.deleteSpeedArr[ this.currentLineIndex -1 ]);
@@ -129,9 +143,9 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.correctingText = true;
                 this.deleteText(cLine);
             }else{
-                var txt = cLine.substring(0, ++this.currentLetterIndex);
-                this.onChar( txt.substr(this.currentLetterIndex - 1) );
-                this.element.textContent  = txt;
+                var char = cLine.substr( this.currentLetterIndex++ , 1);
+                this.onChar( char );
+                this.element.textContent  += char;
                 var that = this;
                 setTimeout(function() {
                     that.typeText(cLine);
@@ -153,14 +167,14 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
-    //this.currentLetterIndex = 0;
     this.nextWordIndex = 0;
     this.typoCount = 0;
     var line = this.nextLine();
+    this.currentLetterIndex = this.deleteUpto[ this.currentLineIndex - 2 ] || 0;
     var that = this;
     line && (
         setTimeout(function() {
-            that.element.textContent = '';
+            //that.element.textContent = '';
             that.typeText(line) ;
         }, this.pauseBeforeNext)
     );
