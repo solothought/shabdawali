@@ -1,5 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.shabdawali = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-var {shuffle, replaceOn, commonStartingString} = require('./util');
+var shuffle = require('./util').shuffle;
+var replaceOn = require('./util').replaceOn;
+var commonStartingString = require('./util').commonStartingString;
 
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
@@ -34,8 +36,7 @@ function Shabdawali(targetEl, opts){
     //updateDynamicDeleteSpeed and deleteUpto
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
-        this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
-        if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
+        
 
         if(opts.replacable){
             if(i < this.lines.length - 1){
@@ -47,6 +48,9 @@ function Shabdawali(targetEl, opts){
         }else{
             this.deleteUpto.push(0);//delete upto 1st char
         }
+
+        this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - ( line.length - this.deleteUpto[i] ) ) );
+        if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
 
     

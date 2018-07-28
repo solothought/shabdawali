@@ -1,4 +1,6 @@
-var {shuffle, replaceOn, commonStartingString} = require('./util');
+var shuffle = require('./util').shuffle;
+var replaceOn = require('./util').replaceOn;
+var commonStartingString = require('./util').commonStartingString;
 
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
@@ -33,8 +35,7 @@ function Shabdawali(targetEl, opts){
     //updateDynamicDeleteSpeed and deleteUpto
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
-        this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - line.length ) );
-        if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
+        
 
         if(opts.replacable){
             if(i < this.lines.length - 1){
@@ -46,6 +47,9 @@ function Shabdawali(targetEl, opts){
         }else{
             this.deleteUpto.push(0);//delete upto 1st char
         }
+
+        this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - ( line.length - this.deleteUpto[i] ) ) );
+        if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
 
     
