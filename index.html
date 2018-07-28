@@ -102,19 +102,17 @@
             var lettersWithShift = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "{", "}", "|", "<", "?", ">", ":", "'", "\"" ];
             var description = [
                 "शब्दावली / Shabdawali",
-                "Amazing human like typing effects limited to your imagination",
+                "Amazing human like typing effects beyond your imagination",
                 "It does typo, and correct them",
-                "External effects like keyboard typing",
-                "External effects like piano keys",//Bug
-                "External effects like typewriter",
-                "External effects like what you can think",
                 "Small size 1.7k (when compressed)",
-                "No dependency",
-                "CPU friendly",
+                "No dependency & CPU friendly",
                 "Dynamic speed to type/delete long sentences",
-                "Can be used as jQuery plugin, Riotjs tag component, React component, or with other libraries",
+                "Can be used as jQuery plugin, React component, or with other libraries",
                 "You can fully control it's behavior",
-                "You can use it to play music notes, typing demo, typing tweets, posts with typing effects"
+                "You can use it for playing music notes",
+                "You can use it for typing demo",
+                "You can use it for typing tweets",
+                "You can use it for posts with typing effects"
             ];
 
             $(document).ready(function(){
@@ -151,8 +149,8 @@
                 } );
 
                 descriptionTyper.checkIfFitsForTypoEffect = function(word){
-                    if(this.currentLineIndex > 3) return false;
-                    if(word === "correct" || ( Math.floor((Math.random() * 3) + 1) !== 2 && word.length > 7) )
+                    //if(word === "correct" || ( Math.floor((Math.random() * 3) + 1) !== 2 && word.length > 7) )
+                    if(word.trim() === "correct" )
                         return true;
                 }
                 descriptionTyper.start();
