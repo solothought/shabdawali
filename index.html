@@ -1,47 +1,166 @@
 <html>
     <head>
-        <script src="static/js/jquery-3.2.1.min.js"></script>
-        <script src="dist/shabdawali.js" ></script>
-<!-- 
-        <style>
-            #typingBox{
-                height: 400px;
-                /* text-align: center; */
-                width: 45%;
-                display: flex;
-                border: 1px solid black;
-                /* align-items: center; */
-                padding: 15px;
-                float: left;
-                margin: 10px;
-            }
-            #textBox{
-                height: 400px;
-                width: 45%;
-                border: 1px solid black;
-                float: right;
-                padding: 15px;
-                margin: 10px;
-            }
-            #updateText{
-                float: left;
-            }
-            #keyChar{
-                width: 100px;
-                height: 100px;
-                border: 1px solid gray;
-            }
-        </style> -->
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+            <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="static/css/kb.css">
+            <script src="static/js/jquery-3.2.1.min.js"></script>
+            <script src="dist/shabdawali.js" ></script>
+            <style>
+                #heading-container{
+                    text-align: center;
+                }
+                #shabdawali {
+                    font-family: 'Open Sans Condensed', sans-serif;
+                }
+            </style>
     </head>
     <body>
-        <div id="typingBox" ></div>
+
+            <!-- <div  class="container" id="heading-container">
+                     <h1 style="color: #49a1e0"> <img src="static/shabdawali_logo.png" height="50px" style="margin: 20px"> शब्दावली / Shabdawali</h1>
+            </div> -->
+            <div  class="container">
+                <div class="row" style="height: 45%">
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <p id="shabdawali" style="font-size: 2.2em; text-align: center;"></p>
+                    </div>
+                </div>
+                <div class="row" style="height: 45%">
+                    <div class="col-12 d-flex justify-content-center align-items-end" >
+                        <div>
+                            <ul id="keyboard" style="bottom: 0px">
+                                <li class="symbol"><span class="off" for="ch`">`</span><span class="on" for="ch~">~</span></li>
+                                <li class="symbol"><span class="off" for="ch1">1</span><span class="on" for="ch!">!</span></li>
+                                <li class="symbol"><span class="off" for="ch2">2</span><span class="on" for="ch@">@</span></li>
+                                <li class="symbol"><span class="off" for="ch3">3</span><span class="on" for="ch#">#</span></li>
+                                <li class="symbol"><span class="off" for="ch4">4</span><span class="on" for="ch$">$</span></li>
+                                <li class="symbol"><span class="off" for="ch5">5</span><span class="on" for="ch%">%</span></li>
+                                <li class="symbol"><span class="off" for="ch6">6</span><span class="on" for="ch^">^</span></li>
+                                <li class="symbol"><span class="off" for="ch7">7</span><span class="on" for="ch&">&amp;</span></li>
+                                <li class="symbol"><span class="off" for="ch8">8</span><span class="on" for="ch*">*</span></li>
+                                <li class="symbol"><span class="off" for="ch9">9</span><span class="on" for="ch(">(</span></li>
+                                <li class="symbol"><span class="off" for="ch0">0</span><span class="on" for="ch)">)</span></li>
+                                <li class="symbol"><span class="off" for="ch-">-</span><span class="on" for="ch_">_</span></li>
+                                <li class="symbol"><span class="off" for="ch=">=</span><span class="on" for="ch+">+</span></li>
+                                <li class="delete lastitem" for="chdel"><span>delete</span></li>
+                                <li class="tab" ><span for="chtab">tab</span></li>
+                                <li class="letter"  ><span for="chq">q</span></li>
+                                <li class="letter"  ><span for="chw">w</span></li>
+                                <li class="letter"  ><span for="che">e</span></li>
+                                <li class="letter"  ><span for="chr">r</span></li>
+                                <li class="letter"  ><span for="cht">t</span></li>
+                                <li class="letter"  ><span for="chy">y</span></li>
+                                <li class="letter"  ><span for="chu">u</span></li>
+                                <li class="letter"  ><span for="chi">i</span></li>
+                                <li class="letter"  ><span for="cho">o</span></li>
+                                <li class="letter"  ><span for="chp">p</span></li>
+                                <li class="symbol"><span class="off" for="ch[">[</span><span class="on" for="ch{" >{</span></li>
+                                <li class="symbol"><span class="off" for="ch]">]</span><span class="on" for="ch}" >}</span></li>
+                                <li class="symbol lastitem"><span class="off" for="ch\\">\</span><span class="on" for="ch|">|</span></li>
+                                <li class="capslock">caps lock</li>
+                                <li class="letter"  ><span for="cha" >a</span></li>
+                                <li class="letter"  ><span for="chs" >s</span></li>
+                                <li class="letter"  ><span for="chd" >d</span></li>
+                                <li class="letter"  ><span for="chf" >f</span></li>
+                                <li class="letter"  ><span for="chg" >g</span></li>
+                                <li class="letter"  ><span for="chh" >h</span></li>
+                                <li class="letter"  ><span for="chj" >j</span></li>
+                                <li class="letter"  ><span for="chk" >k</span></li>
+                                <li class="letter"  ><span for="chl" >l</span></li>
+                                <li class="symbol"><span class="off" for="ch;">;</span><span class="on" for="ch:">:</span></li>
+                                <li class="symbol"><span class="off" for="ch-single">'</span><span class="on" for='ch"'>&quot;</span></li>
+                                <li class="return lastitem"><span>return</span></li>
+                                <li class="left-shift"><span>shift</span></li>
+                                <li class="letter"  ><span for="chz" >z</span></li>
+                                <li class="letter"  ><span for="chx" >x</span></li>
+                                <li class="letter"  ><span for="chc" >c</span></li>
+                                <li class="letter"  ><span for="chv" >v</span></li>
+                                <li class="letter"  ><span for="chb" >b</span></li>
+                                <li class="letter"  ><span for="chn" >n</span></li>
+                                <li class="letter"  ><span for="chm" >m</span></li>
+                                <li class="symbol"><span class="off" for="ch," >,</span><span class="on"for="ch<" >&lt;</span></li>
+                                <li class="symbol"><span class="off" for="ch." >.</span><span class="on"for="ch>" >&gt;</span></li>
+                                <li class="symbol"><span class="off" for="ch/" >/</span><span class="on"for="ch?" >?</span></li>
+                                <li class="right-shift lastitem"><span>shift</span></li>
+                                <li class="space lastitem"  ><span for="ch ">&nbsp;</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
-            <p id="typingBox2" ></p>
+            <textarea id="typingBox2" spellcheck="true"></textarea>
         </div>
-        <div id="letter"></div>
+
+        <div id="commonText"></div>
+
+        <div id="letter"></div> -->
 
         <script>
-            var mylines = [
+            var lettersWithShift = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "{", "}", "|", "<", "?", ">", ":", "'", "\"" ];
+            var description = [
+                "शब्दावली / Shabdawali",
+                "Amazing human like typing effects limited to your imagination",
+                "It does typo, and correct them",
+                "External effects like keyboard typing",
+                "External effects like piano keys",//Bug
+                "External effects like typewriter",
+                "External effects like what you can think",
+                "Small size 1.7k (when compressed)",
+                "No dependency",
+                "CPU friendly",
+                "Dynamic speed to type/delete long sentences",
+                "Can be used as jQuery plugin, Riotjs tag component, React component, or with other libraries",
+                "You can fully control it's behavior",
+                "You can use it to play music notes, typing demo, typing tweets, posts with typing effects"
+            ];
+
+            $(document).ready(function(){
+                var descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
+                    lines: description,
+                    replacable : true,
+                    typoEffect: true,
+                    onCharChange : function(char){
+                        $("#keyboard .keyPressed").removeClass("keyPressed");
+                        if(lettersWithShift.indexOf(char) !== -1){
+                            $("#keyboard li.left-shift").addClass("keyPressed");
+                        }
+                        if(char === "BS"){
+                            $("#keyboard li.delete").addClass("keyPressed");
+                        }else if(char === "DEL"){
+                            $("#keyboard li.delete").addClass("keyPressed");
+                        }else if(char === "CR"){
+                            $("#keyboard li.return").addClass("keyPressed");
+                        }else{
+                            if(char.indexOf("'") === -1) 
+                                $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
+                        }
+
+                        setTimeout(function(){
+                            $("#keyboard .keyPressed").removeClass("keyPressed");
+                        },500);
+                    },
+                    onLineChange : function(){
+                        $("#keyboard li.return").addClass("keyPressed");
+                        setTimeout(function(){
+                            $("#keyboard .keyPressed").removeClass("keyPressed");
+                        },400);
+                    },
+                } );
+
+                descriptionTyper.checkIfFitsForTypoEffect = function(word){
+                    if(this.currentLineIndex > 3) return false;
+                    if(word === "correct" || ( Math.floor((Math.random() * 3) + 1) !== 2 && word.length > 7) )
+                        return true;
+                }
+                descriptionTyper.start();
+            });
+
+            
+
+            /* var mylines = [
                 'Welcome to शब्दावली (shabdawali)',
                 'शब्दावली (shabdawali) can help you to decorate your page and posts with amazing typing effects',
                 'You can modify the effect with different options',
@@ -54,9 +173,18 @@
                 'and callbacks',
             ];
 
+            var mylines3 = [
+                'My name is Amit Gupta',
+                'I love to work with Regular expressions',
+                'I love to work with SQL queries',
+                'I love to work with algorithms',
+                'And I feel bored to work on maintenance projects',
+            ];
+
             $(document).ready(function(){
                 var targetEl = document.getElementById("typingBox");
                 var targetEl2 = document.getElementById("typingBox2");
+                var targetEl3 = document.getElementById("commonText");
 
                 var first = shabdawali(targetEl,{
                     lines : mylines,
@@ -70,11 +198,16 @@
                     typoEffect : true
                 });
                 var second = shabdawali(targetEl2,{lines : mylines2});
+                var thrid = shabdawali(targetEl3,{
+                    lines : mylines3,
+                    replacable : true
+                });
 
                 first.start();
                 second.start();
+                thrid.start();
 
-            })
+            }) */
         </script>
     </body>
 </html>
