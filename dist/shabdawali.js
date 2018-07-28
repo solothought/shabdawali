@@ -10,7 +10,7 @@ function Shabdawali(targetEl, opts){
     this.onLine = opts.onLineChange || function(){};
     this.nextWord = opts.nextWord || function(){};
 
-    this.speed = opts.speed || 70;
+    this.speed = opts.typingSpeed || 70;
     this.timeToReadAWord = 80;
     this.dynamicPauseBeforeDelete = opts.dynamicPauseBeforeDelete || true; 
     this.pauseBeforeDelete = opts.pauseBeforeDelete || 2000; 
@@ -36,8 +36,6 @@ function Shabdawali(targetEl, opts){
     //updateDynamicDeleteSpeed and deleteUpto
     for(var i = 0; i < this.lines.length; i++){
         var line = this.lines[i];
-        
-
         if(opts.replacable){
             if(i < this.lines.length - 1){
                 var commonUpto = commonStartingString(line, this.lines[ i+1 ])
@@ -52,8 +50,6 @@ function Shabdawali(targetEl, opts){
         this.deleteSpeedArr.push( opts.deleteSpeed || (this.deleteSpeed  - ( line.length - this.deleteUpto[i] ) ) );
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
-
-    
     
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
