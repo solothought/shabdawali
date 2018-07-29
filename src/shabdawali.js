@@ -50,9 +50,7 @@ function Shabdawali(targetEl, opts){
         if( this.deleteSpeedArr[i] < 5 ) this.deleteSpeedArr[i] = 5;
     }
     
-    this.currentLineIndex = 0;
-    this.currentLetterIndex = 0;
-    this.nextWordIndex = 0;
+    
     this.typo = {//TO DO make it configurable
         max : 1,
         minWordLength : 5,
@@ -60,8 +58,9 @@ function Shabdawali(targetEl, opts){
         skip : 2,
         randomFactor : 4 //higher 
     }
-    this.typoCount = 0;
-    this.startCorrectingAt = -1;
+    
+
+    this._pauseCallBack;
 }
 
 //Check if the given word should be used for spelling correction effects
@@ -80,11 +79,39 @@ Shabdawali.prototype.checkIfFitsForTypoEffect = function(word){//TO DO make it c
 }
 
 Shabdawali.prototype.start = function(){
+    this._stopped = false;
+    this.currentLineIndex = 0;
+    this.currentLetterIndex = 0;
+    this.nextWordIndex = 0;
+    this.typoCount = 0;
+    this.startCorrectingAt = -1;
+
+    this.element.textContent = '';
     this.typeNext();
 }
 
+Shabdawali.prototype.stop = function(){
+    this._stopped = true;
+}
+
+Shabdawali.prototype.pause = function(){
+    this._paused = true;
+}
+Shabdawali.prototype.resume = function(){
+    this._paused = false;
+    this._pauseCallBack && setTimeout(this._pauseCallBack, this.pauseUntil);
+    this._pauseCallBack = null
+}
+
 Shabdawali.prototype.deleteText = function(cLine){
-    if(this.correctingText && this.typoRange === 0){
+    if(this._stopped){
+        return;
+    }else if(this._paused){
+        var that = this;
+        this._pauseCallBack = function() {
+            that.deleteText(cLine);
+        }
+    }else if(this.correctingText && this.typoRange === 0){
         this.typeText( this.lines[this.currentLineIndex - 1] );
         this.correctingText = false;
     }else if(this.correctingText && this.typoRange > 0){
@@ -108,7 +135,14 @@ Shabdawali.prototype.delete = function(cLine, speed){
 
 
 Shabdawali.prototype.typeText = function(cLine){
-    if(cLine){
+    if(this._stopped){
+        return;
+    }else if(this._paused){
+        var that = this;
+        this._pauseCallBack = function() {
+            that.typeText(cLine);
+        }
+    }else if(cLine){
         if(this.currentLetterIndex === cLine.length){//complete line has been typed
             if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex){
                 this.startCorrectingAt = -1;

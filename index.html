@@ -115,11 +115,13 @@
                 "You can use it for posts with typing effects"
             ];
 
+            var descriptionTyper;
             $(document).ready(function(){
-                var descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
+                descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
                     lines: description,
                     replacable : true,
                     typoEffect: true,
+                    repeat: false,
                     onCharChange : function(char){
                         $("#keyboard .keyPressed").removeClass("keyPressed");
                         if(lettersWithShift.indexOf(char) !== -1){
