@@ -1,10 +1,10 @@
 {
   "name": "shabdawali",
-  "version": "1.0.0",
-  "description": "Amazing typping effects",
+  "version": "2.0.0",
+  "description": "Amazing human like typping effects with typo, events, dynamic speed and more",
   "main": "src/shabdawali.js",
   "scripts": {
-    "bundle": "browserify src/shabdawali.js -s shabdawali > dist/shabdawali.js"
+    "bundle": "browserify src/shabdawali.js -s shabdawali > dist/shabdawali.js; browserify src/shabdawali.js -s shabdawali | uglifyjs --compress > dist/shabdawali.min.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,13 @@
     "typing",
     "typo",
     "delete",
-    "correction"
+    "correction",
+    "spelling",
+    "replace", 
+    "keyboard",
+    "querty",
+    "piano",
+    "keypad"
   ],
   "author": "Amit Kumar Gupta",
   "license": "MIT",
@@ -22,7 +28,8 @@
     "url": "https://github.com/amitguptagwl/shabdawali/issues"
   },
   "homepage": "https://github.com/amitguptagwl/shabdawali#readme",
-  "dependencies": {
-    "browserify": "^16.2.2"
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "uglify-js": "^3.4.6"
   }
 }
