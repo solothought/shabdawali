@@ -22,7 +22,7 @@
 
 # How to use
 
-You can either install it through npm or use directly js from dist folder or from some CDN.
+You can either install it through npm or use directly js from [dist](dist) folder or from some [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
 
 ```bash
 npm i shabdawali
@@ -127,4 +127,61 @@ Eg
 "I have worked in India"
 "I have worked in Japan"
 "I have worked in England"
+```
+
+# Integration with other JS libraries
+
+
+## Jquery Plugin
+
+```JavaScript
+(function($){
+    $.fn.shabdawali = function(options) {
+
+    return this.each(function() {
+        shabdawali($(this), options);
+    });
+};
+  
+})(jQuery);
+```
+
+## Riot JS Tag
+
+```html
+<slate>
+    <h1 ref="slat"></h1>
+    <script>
+        shabdawali(this.refs.slat, this.opts);
+    </script>
+</slate>
+```
+
+## Reat component
+
+```js
+//-- check https://github.com/amitguptagwl/shabdawali for more detail
+
+class Slate extends React.Component {
+  constructor (props) {
+    super(props);
+  }
+  
+  componentDidMount () {
+      var props = { lines: [ "शब्दावली (shabdawali)", "It can be used as react component as well"]
+    };
+    shabdawali(this.el, props);
+  }
+  
+  render(){
+  	return <span ref={(el) => { this.el = el; }}>{this.props.children}</span>;
+  }
+}
+
+ReactDOM.render(
+  <div>
+	  <Slate />
+  </div>,
+  document.getElementById('slat')
+);
 ```
