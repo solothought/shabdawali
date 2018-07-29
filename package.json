@@ -1,6 +1,6 @@
 {
   "name": "shabdawali",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Amazing human like typping effects with typo, events, dynamic speed and more",
   "main": "src/shabdawali.js",
   "scripts": {
