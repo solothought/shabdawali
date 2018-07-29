@@ -56,7 +56,7 @@ function Shabdawali(targetEl, opts){
     this.typo = {//TO DO make it configurable
         max : 1,
         minWordLength : 5,
-        extendedRange : 3,
+        goAheadLimit : 3,
         skip : 2,
         randomFactor : 4 //higher 
     }
@@ -110,7 +110,11 @@ Shabdawali.prototype.delete = function(cLine, speed){
 Shabdawali.prototype.typeText = function(cLine){
     if(cLine){
         if(this.currentLetterIndex === cLine.length){//complete line has been typed
-            if(this.deleteEffect){
+            if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex){
+                this.startCorrectingAt = -1;
+                this.correctingText = true;
+                this.deleteText(cLine);
+            }else if(this.deleteEffect){
                 var gape = this.pauseBeforeDelete;
                 if(this.dynamicPauseBeforeDelete){
                     gape = this.timeToReadAWord * (cLine.length / 4);
@@ -124,18 +128,23 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.typeNext();
             }
         }else{//still typing
-            if( this.typoEffect && this.currentLetterIndex >= this.nextWordIndex && this.nextWordIndex > -1 && this.typoCount < this.typo.max){
-                var nextWordIndex = cLine.indexOf(' ', this.nextWordIndex+1)
-                var word = cLine.substr(this.nextWordIndex, nextWordIndex - this.nextWordIndex);
+            if( this.typoEffect && this.currentLetterIndex === this.nextWordIndex && this.typoCount < this.typo.max){
+                var nextSpaceIndex = cLine.indexOf(' ', this.nextWordIndex);
+                //var goAheadLimit = this.typo.goAheadLimit;
+                if(nextSpaceIndex === -1) { 
+                    nextSpaceIndex = cLine.length + 1;
+                    //goAheadLimit = -1;
+                }
+                var word = cLine.substr(this.nextWordIndex, nextSpaceIndex - this.nextWordIndex);
                 this.nextWord(word);//callBack
                 if( this.checkIfFitsForTypoEffect(word) ){
                     var typoWord = this.makeTypo( word ) ;
-                    cLine = replaceOn(cLine, this.currentLetterIndex + 1 , typoWord);
+                    cLine = replaceOn(cLine, this.currentLetterIndex + this.typo.skip , typoWord);
                     this.typoCount++;
-                    this.typoRange =  this.typo.skip + typoWord.length + this.typo.extendedRange;
-                    this.startCorrectingAt = this.currentLetterIndex + this.typoRange;
+                    this.typoRange =  word.length;// + goAheadLimit;
+                    this.startCorrectingAt = this.currentLetterIndex + this.typoRange ;
                 }
-                this.nextWordIndex = nextWordIndex;
+                this.nextWordIndex = nextSpaceIndex + 1;
             }
 
             if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex){
