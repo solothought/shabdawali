@@ -76,7 +76,8 @@ function Shabdawali(targetEl, opts){
 
     this.events = {
         "pause" : [],
-        "resume" : []
+        "resume" : [],
+        "finish" : []
     }
 }
 
@@ -244,7 +245,7 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
-    if(this.playCount === 0){
+    if(this.playCount === 0){//automatic pause when start or resume is called with line number
         this.pause();
         var that = this;
         this._pauseCallBack = function() {
@@ -267,6 +268,10 @@ Shabdawali.prototype.typeNext = function(){
             that.typeText(line) ;
         }, this.pauseBeforeNext)
     );
+
+    if(!line){//nothing to play
+        this._emit("finish");
+    }
 }
 
 Shabdawali.prototype._emit = function(eventName){
