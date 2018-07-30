@@ -5,6 +5,8 @@ var commonStartingString = require('./util').commonStartingString;
 
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
+    if(!opts) opts={};
+
     this.lines = opts.lines;
     this.playCount = -1;
     this.onChar = opts.onCharChange || function(){};
@@ -24,8 +26,17 @@ function Shabdawali(targetEl, opts){
     this.deleteSpeedArr = [];
     this.deleteUpto = [];
 
-    this.repeat = opts.repeat || true;
-    this.deleteEffect = opts.deleteEffect || true;
+    if(opts.repeat === false){
+        this.repeat = false;
+    }else{
+        this.repeat = true;
+    }
+
+    if(opts.deleteEffect === false){
+        this.deleteEffect = false;
+    }else{
+        this.deleteEffect = true;
+    }
 
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
@@ -211,7 +222,8 @@ Shabdawali.prototype.typeText = function(cLine){
             }else{
                 var char = cLine.substr( this.currentLetterIndex++ , 1);
                 this.onChar( char );
-                this.element.textContent  += char;
+                //this.element.textContent  += char;
+                this.element.textContent  = cLine.substr( 0, this.currentLetterIndex  );
                 var that = this;
                 setTimeout(function() {
                     that.typeText(cLine);
@@ -252,7 +264,7 @@ Shabdawali.prototype.typeNext = function(){
     var that = this;
     line && (
         setTimeout(function() {
-            //that.element.textContent = '';
+            that.element.textContent = '';
             that.typeText(line) ;
         }, this.pauseBeforeNext)
     );
