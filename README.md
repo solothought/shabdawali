@@ -77,6 +77,14 @@ You may want to play music on piano with key press effect, events can help you
 }
 ```
 
+playback events
+
+```js
+var me = shabdavali(..),
+me.on("pause", fn);
+me.on("resume", fn);
+```
+
 **Some ideas**
 
 * Keyboard typing effect
@@ -127,6 +135,19 @@ Eg
 "I have worked in India"
 "I have worked in Japan"
 "I have worked in England"
+```
+
+### Playback
+
+You can pause/resume the animation whenever you want
+
+```js
+var amit = shabdawali(..);
+
+amit.start(3);//pause after typing 3 sentences
+amit.resume(3);//pause after typing next 3 sentences
+amit.pause(); //pause manually
+amit.resume(); //resume previously paused typing
 ```
 
 # Integration with other JS libraries

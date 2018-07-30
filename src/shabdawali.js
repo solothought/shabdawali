@@ -5,6 +5,7 @@ var commonStartingString = require('./util').commonStartingString;
 function Shabdawali(targetEl, opts){
     this.element = targetEl;
     this.lines = opts.lines;
+    this.playCount = -1;
     this.onChar = opts.onCharChange || function(){};
     this.onLine = opts.onLineChange || function(){};
     this.nextWord = opts.nextWord || function(){};
@@ -59,8 +60,13 @@ function Shabdawali(targetEl, opts){
         randomFactor : 4 //higher 
     }
     
-
+    
     this._pauseCallBack;
+
+    this.events = {
+        "pause" : [],
+        "resume" : []
+    }
 }
 
 //Check if the given word should be used for spelling correction effects
@@ -78,14 +84,18 @@ Shabdawali.prototype.checkIfFitsForTypoEffect = function(word){//TO DO make it c
     }
 }
 
-Shabdawali.prototype.start = function(){
+Shabdawali.prototype.start = function(count){
     this._stopped = false;
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
     this.nextWordIndex = 0;
     this.typoCount = 0;
     this.startCorrectingAt = -1;
-
+    if(count && count <= this.lines.length ){
+        this.playCount = count;
+    }else{
+        this.playCount = -1;
+    }
     this.element.textContent = '';
     this.typeNext();
 }
@@ -96,11 +106,23 @@ Shabdawali.prototype.stop = function(){
 
 Shabdawali.prototype.pause = function(){
     this._paused = true;
+    this._emit("pause");
 }
-Shabdawali.prototype.resume = function(){
+Shabdawali.prototype.resume = function(count){
+    if(count && count <= this.lines.length ){
+        this.playCount = count;
+    }else{
+        this.playCount = -1;
+    }
     this._paused = false;
     this._pauseCallBack && setTimeout(this._pauseCallBack, this.pauseUntil);
-    this._pauseCallBack = null
+    this._pauseCallBack = null;
+
+    //repeat when on end
+    if(this.currentLineIndex === this.lines.length){
+        this.start(count);
+    }
+    this._emit("resume");
 }
 
 Shabdawali.prototype.deleteText = function(cLine){
@@ -210,6 +232,18 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
+    if(this.playCount === 0){
+        this.pause();
+        var that = this;
+        this._pauseCallBack = function() {
+            that.typeNext();
+        }
+        return;
+    }else if(this.playCount > 0){
+        this.playCount--;
+    }else {
+
+    }
     this.nextWordIndex = 0;
     this.typoCount = 0;
     var line = this.nextLine();
@@ -222,6 +256,17 @@ Shabdawali.prototype.typeNext = function(){
         }, this.pauseBeforeNext)
     );
 }
+
+Shabdawali.prototype._emit = function(eventName){
+    for(var i=0; i< this.events[eventName].length; i++){
+        this.events[eventName][i]();
+    }
+}
+Shabdawali.prototype.on = function(eventName, fn){
+    this.events[eventName].push(fn);
+}
+
+
 
 module.exports = function(targetEl, opts){
     return new Shabdawali(targetEl, opts);
