@@ -9,13 +9,13 @@
     border: 1px solid #f9f9f9;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    }
-    #keyboard {
+}
+#keyboard {
     margin: 0;
     padding: 0;
     list-style: none;
-    }
-    #keyboard li {
+}
+#keyboard li {
     float: left;
     margin: 0 5px 5px 0;
     width: 40px;
@@ -26,8 +26,8 @@
     border: 1px solid #101010;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    }
-    .capslock, .tab, .left-shift {
+}
+.capslock, .tab, .left-shift {
     clear: left;
     }
     #keyboard .tab, #keyboard .delete {
@@ -69,3 +69,57 @@
         background-color: orange;
         color: #101010;
     }
+
+#blinking-cursor {
+  color: #101010;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
