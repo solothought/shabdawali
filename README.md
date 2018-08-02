@@ -11,7 +11,7 @@
 
 * Amazing human like typing effects beyond your imagination
 * It does typo, and correct them
-* Small size 1.7k (when compressed)
+* Small size **[1.5k](https://bundlephobia.com/result?p=shabdawali@2.1.0)**
 * No dependency
 * CPU friendly
 * Dynamic speed and pauses to type/delete sentences.
