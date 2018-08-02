@@ -100,6 +100,7 @@
                     </div>
                 </div>
             </div>
+            <div id="audios"></div>
         
         <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
@@ -146,9 +147,16 @@
                         }else if(char === "CR"){
                             $("#keyboard li.return").addClass("keyPressed");
                         }else{
-                            if(char.indexOf("'") === -1) 
+                            if(char.indexOf("'") === -1) {
                                 $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
-                        }
+
+                                if (descriptionTyper.currentLineIndex === 11) {
+                                    $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.mp3" style="display: none;">');
+                                } else if ($('#audio').length) {
+                                    $('#audios').remove();
+                                }
+                            }                               
+                        }  
 
                         setTimeout(function(){
                             $("#keyboard .keyPressed").removeClass("keyPressed");
@@ -177,10 +185,8 @@
                         cursor.show();
                     else
                         cursor.hide();
-                });
-            });
-
-            
+                });                
+            });            
 
             /* var mylines = [
                 'Welcome to शब्दावली (shabdawali)',
