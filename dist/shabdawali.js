@@ -38,6 +38,8 @@ function Shabdawali(targetEl, opts){
         this.deleteEffect = true;
     }
 
+    if(opts.cursorEffect) appendCursor(this.element);
+
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
     }else{
@@ -80,6 +82,8 @@ function Shabdawali(targetEl, opts){
         "resume" : [],
         "finish" : []
     }
+
+    
 }
 
 //Check if the given word should be used for spelling correction effects
@@ -284,7 +288,12 @@ Shabdawali.prototype.on = function(eventName, fn){
     this.events[eventName].push(fn);
 }
 
-
+function appendCursor(el){
+    var cursorEl = document.createElement('span');
+    cursorEl.classList.add('shabdawali-cursor');
+    cursorEl.textContent = '|';
+    el.insertAdjacentElement('afterend', cursorEl);
+}
 
 module.exports = function(targetEl, opts){
     return new Shabdawali(targetEl, opts);
