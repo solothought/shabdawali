@@ -38,6 +38,9 @@
                             <p>
                                 <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
                                 <label for="check-blinkCursor">Display Blinking Cursor.</label>
+
+                                <input type="checkbox" id="check-keySound" name="check-keySound" checked>
+                                <label for="check-keySound">Play keypress sound.</label>
                             </p>
 
                             <ul id="keyboard" style="bottom: 0px">
@@ -100,7 +103,11 @@
                     </div>
                 </div>
             </div>
-            <div id="audios"></div>
+            <!-- <div id="audios"></div> -->
+
+            <audio id="audio" controls style="display:none">
+                <source src="static/media/typewriter_key_sound3.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+            </audio>
         
         <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
@@ -136,6 +143,9 @@
                     typoEffect: true,
                     repeat: false,
                     onCharChange : function(char){
+                        if ($("#check-keySound").prop("checked")){
+                            document.getElementById('audio').play();
+                        }
                         $("#keyboard .keyPressed").removeClass("keyPressed");
                         if(lettersWithShift.indexOf(char) !== -1){
                             $("#keyboard li.left-shift").addClass("keyPressed");
@@ -150,11 +160,11 @@
                             if(char.indexOf("'") === -1) {
                                 $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
 
-                                if (descriptionTyper.currentLineIndex === 11) {
+                                /* if (descriptionTyper.currentLineIndex === 11) {
                                     $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.webm" style="display: none;">');
                                 } else if ($('#audio').length) {
                                     $('#audios').remove();
-                                }
+                                } */
                             }                               
                         }  
 
