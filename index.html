@@ -22,12 +22,24 @@
             <div  class="container">
                 <div class="row" style="height: 45%">
                     <div class="col-12 d-flex justify-content-center align-items-center">
-                        <p id="shabdawali" style="font-size: 2.2em; text-align: center;"></p>
+                        <p style="font-size: 2.2em; text-align: center;">
+                            <span id="shabdawali"></span>
+                            
+                            <!-- Added blinking cursor effect -->
+                            <span id="blinking-cursor">|</span>
+                        </p>
+                        
                     </div>
                 </div>
                 <div class="row" style="height: 45%">
                     <div class="col-12 d-flex justify-content-center align-items-end" >
                         <div>
+                            <!-- display blinking cursor checkbox. -->
+                            <p>
+                                <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
+                                <label for="check-blinkCursor">Display Blinking Cursor.</label>
+                            </p>
+
                             <ul id="keyboard" style="bottom: 0px">
                                 <li class="symbol"><span class="off" for="ch`">`</span><span class="on" for="ch~">~</span></li>
                                 <li class="symbol"><span class="off" for="ch1">1</span><span class="on" for="ch!">!</span></li>
@@ -88,6 +100,7 @@
                     </div>
                 </div>
             </div>
+            <div id="audios"></div>
         
         <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
@@ -134,9 +147,16 @@
                         }else if(char === "CR"){
                             $("#keyboard li.return").addClass("keyPressed");
                         }else{
-                            if(char.indexOf("'") === -1) 
+                            if(char.indexOf("'") === -1) {
                                 $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
-                        }
+
+                                if (descriptionTyper.currentLineIndex === 11) {
+                                    $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.webm" style="display: none;">');
+                                } else if ($('#audio').length) {
+                                    $('#audios').remove();
+                                }
+                            }                               
+                        }  
 
                         setTimeout(function(){
                             $("#keyboard .keyPressed").removeClass("keyPressed");
@@ -156,9 +176,17 @@
                         return true;
                 }
                 descriptionTyper.start();
-            });
-
-            
+                
+                // allow user to check whether to display blinking cursor or not. 
+                $("#check-blinkCursor").on("click", function() {
+                    var checkBox = $("#check-blinkCursor");
+                    var cursor = $("#blinking-cursor");
+                    if (checkBox.prop("checked"))
+                        cursor.show();
+                    else
+                        cursor.hide();
+                });                
+            });            
 
             /* var mylines = [
                 'Welcome to शब्दावली (shabdawali)',
