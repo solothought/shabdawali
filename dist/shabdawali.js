@@ -196,7 +196,8 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.typeNext();
             }
         }else{//still typing
-            if( this.typoEffect && this.currentLetterIndex === this.nextWordIndex && this.typoCount < this.typo.max){
+            if( this.typoEffect && this.currentLetterIndex === this.nextWordIndex && this.typoCount < this.typo.max)
+            {
                 var nextSpaceIndex = cLine.indexOf(' ', this.nextWordIndex);
                 //var goAheadLimit = this.typo.goAheadLimit;
                 if(nextSpaceIndex === -1) { 
@@ -215,19 +216,37 @@ Shabdawali.prototype.typeText = function(cLine){
                 this.nextWordIndex = nextSpaceIndex + 1;
             }
 
-            if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex){
+            if(this.typoEffect && this.startCorrectingAt > 0 && this.startCorrectingAt === this.currentLetterIndex)
+            {
                 this.startCorrectingAt = -1;
                 this.correctingText = true;
                 this.deleteText(cLine);
-            }else{
+            }
+            else
+            {
                 var char = cLine.substr( this.currentLetterIndex++ , 1);
                 this.onChar( char );
                 //this.element.textContent  += char;
                 this.element.textContent  = cLine.substr( 0, this.currentLetterIndex  );
                 var that = this;
-                setTimeout(function() {
+                if(char == ' ')
+                {
+                    var prevSpaceIndex = cLine.lastIndexOf(' ', this.currentLetterIndex - 2);
+                    if(prevSpaceIndex == -1)
+                    {
+                        prevSpaceIndex = 0;
+                    }
+                    var prevWord = cLine.substr(prevSpaceIndex, this.currentLetterIndex- prevSpaceIndex);
+                    setTimeout(function() {
+                        that.typeText(cLine);
+                    }, 50 * prevWord.length );
+                }
+                else
+                {
+                    setTimeout(function() {
                     that.typeText(cLine);
-                }, this.speed );
+                    }, this.speed );
+                }
             }
 
         }
