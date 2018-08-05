@@ -38,7 +38,9 @@ function Shabdawali(targetEl, opts){
         this.deleteEffect = true;
     }
 
-    if(opts.cursorEffect) appendCursor(this.element);
+    this.appendCursor(this.element);
+
+    opts.cursorEffect ? this.showCursor() : this.hideCursor();
 
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
@@ -288,11 +290,19 @@ Shabdawali.prototype.on = function(eventName, fn){
     this.events[eventName].push(fn);
 }
 
-function appendCursor(el){
-    var cursorEl = document.createElement('span');
-    cursorEl.classList.add('shabdawali-cursor');
-    cursorEl.textContent = '|';
-    el.insertAdjacentElement('afterend', cursorEl);
+Shabdawali.prototype.appendCursor = function(){
+    this.cursorEl = document.createElement('span');
+    this.cursorEl.classList.add('shabdawali-cursor');
+    this.cursorEl.textContent = '|';
+    this.element.insertAdjacentElement('afterend', this.cursorEl);
+}
+
+Shabdawali.prototype.hideCursor = function(){
+    this.cursorEl.style.display = "none";
+}
+
+Shabdawali.prototype.showCursor = function(){
+    this.cursorEl.style.display = "inline";
 }
 
 module.exports = function(targetEl, opts){

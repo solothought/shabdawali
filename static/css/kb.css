@@ -70,7 +70,7 @@
         color: #101010;
     }
 
-#blinking-cursor {
+.shabdawali-cursor {
   color: #101010;
   -webkit-animation: 1s blink step-end infinite;
   -moz-animation: 1s blink step-end infinite;

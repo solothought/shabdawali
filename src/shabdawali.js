@@ -37,6 +37,10 @@ function Shabdawali(targetEl, opts){
         this.deleteEffect = true;
     }
 
+    this.appendCursor(this.element);
+
+    opts.cursorEffect ? this.showCursor() : this.hideCursor();
+
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
     }else{
@@ -79,6 +83,8 @@ function Shabdawali(targetEl, opts){
         "resume" : [],
         "finish" : []
     }
+
+    
 }
 
 //Check if the given word should be used for spelling correction effects
@@ -283,7 +289,20 @@ Shabdawali.prototype.on = function(eventName, fn){
     this.events[eventName].push(fn);
 }
 
+Shabdawali.prototype.appendCursor = function(){
+    this.cursorEl = document.createElement('span');
+    this.cursorEl.classList.add('shabdawali-cursor');
+    this.cursorEl.textContent = '|';
+    this.element.insertAdjacentElement('afterend', this.cursorEl);
+}
 
+Shabdawali.prototype.hideCursor = function(){
+    this.cursorEl.style.display = "none";
+}
+
+Shabdawali.prototype.showCursor = function(){
+    this.cursorEl.style.display = "inline";
+}
 
 module.exports = function(targetEl, opts){
     return new Shabdawali(targetEl, opts);

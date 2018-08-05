@@ -24,11 +24,7 @@
                     <div class="col-12 d-flex justify-content-center align-items-center">
                         <p style="font-size: 2.2em; text-align: center;">
                             <span id="shabdawali"></span>
-                            
-                            <!-- Added blinking cursor effect -->
-                            <span id="blinking-cursor">|</span>
                         </p>
-                        
                     </div>
                 </div>
                 <div class="row" style="height: 45%">
@@ -103,7 +99,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div id="audios"></div> -->
 
             <audio id="audio" controls style="display:none">
                 <source src="static/media/typewriter_key_sound3.mp3" type="audio/mpeg"> Your browser does not support the audio element.
@@ -138,8 +133,10 @@
             var descriptionTyper;
             $(document).ready(function(){
                 descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
+
                     lines: description,
                     replacable : true,
+                    cursorEffect : true,
                     typoEffect: true,
                     repeat: false,
                     onCharChange : function(char){
@@ -192,60 +189,12 @@
                     var checkBox = $("#check-blinkCursor");
                     var cursor = $("#blinking-cursor");
                     if (checkBox.prop("checked"))
-                        cursor.show();
+                        descriptionTyper.showCursor();
                     else
-                        cursor.hide();
-                });                
+                        descriptionTyper.hideCursor();
+                });
             });            
 
-            /* var mylines = [
-                'Welcome to शब्दावली (shabdawali)',
-                'शब्दावली (shabdawali) can help you to decorate your page and posts with amazing typing effects',
-                'You can modify the effect with different options',
-            ];
-
-
-            var mylines2 = [
-                '<b>This<b> is another instance',
-                'शब्दावली (shabdawali) supports multiple instances, dynamic speed, delete and backspacing effects',
-                'and callbacks',
-            ];
-
-            var mylines3 = [
-                'My name is Amit Gupta',
-                'I love to work with Regular expressions',
-                'I love to work with SQL queries',
-                'I love to work with algorithms',
-                'And I feel bored to work on maintenance projects',
-            ];
-
-            $(document).ready(function(){
-                var targetEl = document.getElementById("typingBox");
-                var targetEl2 = document.getElementById("typingBox2");
-                var targetEl3 = document.getElementById("commonText");
-
-                var first = shabdawali(targetEl,{
-                    lines : mylines,
-                    onCharChange : function(ch){
-                        $("#letter").text(ch);
-                    },
-                    speed : 100,
-                    nextWord : function(w){
-                        //console.log(w);
-                    },
-                    typoEffect : true
-                });
-                var second = shabdawali(targetEl2,{lines : mylines2});
-                var thrid = shabdawali(targetEl3,{
-                    lines : mylines3,
-                    replacable : true
-                });
-
-                first.start();
-                second.start();
-                thrid.start();
-
-            }) */
         </script>
     </body>
 </html>
