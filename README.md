@@ -22,7 +22,7 @@
 
 # How to use
 
-You can either install it through npm ,or download js from dist [dist](dist) folder or directly refer to [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
+You can either install it through npm ,or download js from [dist](dist) folder or directly refer to [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
 
 ```bash
 npm i shabdawali
