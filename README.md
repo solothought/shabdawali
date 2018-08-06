@@ -1,5 +1,5 @@
 # शब्दावली (shabdawali)
-<img src="static/shabdawali_logo.png" width="80px"> Amazing human like typping effects with typo, events, dynamic speed and more
+<img src="static/shabdawali_logo.png" width="80px"> Amazing human-like typing effects with typo, events, dynamic speed and more
 
 
 
@@ -9,20 +9,20 @@
 
 ## Features
 
-* Amazing human like typing effects beyond your imagination
-* It does typo, and correct them
-* Small size **[1.5k](https://bundlephobia.com/result?p=shabdawali@2.1.0)**
-* No dependency
-* CPU friendly
+* Amazing human-like typing effects beyond your imagination.
+* It finds typos, and corrects them.
+* Small size **[1.5k](https://bundlephobia.com/result?p=shabdawali@2.1.0)**.
+* No dependency.
+* CPU friendly.
 * Dynamic speed and pauses to type/delete sentences.
-* Can be used as jQuery plugin, React component, or with other libraries
-* You can fully control it's behavior
-* You can use it for playing music notes, typing demo, typing tweets, or typing posts on devRant, twitter, github.
-* Check http://amitkumargupta.work for live demo.
+* Can be used as a jQuery plugin, React component, or with other libraries.
+* You can fully control it's behavior.
+* You can use it for playing music notes, typing demos, typing posts on DevRant, Twitter and Github.
+* Check http://amitkumargupta.work for a live demo.
 
 # How to use
 
-You can either install it through npm or use directly js from [dist](dist) folder or from some [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
+You can either install it through npm or directly from js in the [dist](dist) folder or from [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
 
 ```bash
 npm i shabdawali
@@ -41,7 +41,7 @@ shabdawali(el, {
 
 ### Speed
 
-You can control typing speed, deleting speed, pauses etc. using following configuration
+You can control typing speed, deleting speed, pauses etc. using the following configuration:
 
 ```js
 {
@@ -55,7 +55,7 @@ You can control typing speed, deleting speed, pauses etc. using following config
 
 ### Effects
 
-You can enable disable effects
+You can enable/disable effects:
 
 ```js
 {
@@ -67,7 +67,7 @@ You can enable disable effects
 
 ### Events
 
-You may want to play music on piano with key press effect, events can help you
+You may want to play music on a piano with key press effects. Events can help you:
 
 ```js
 {
@@ -77,7 +77,7 @@ You may want to play music on piano with key press effect, events can help you
 }
 ```
 
-playback events
+playback events:
 
 ```js
 var me = shabdavali(..),
@@ -87,16 +87,16 @@ me.on("resume", fn);
 
 **Some ideas**
 
-* Keyboard typing effect
-* Paino playing effect
-* Typewriter strike effect
-* Number dial effect
-* background change 
-* whatever you can think
+* Keyboard typing effect.
+* Piano playing effect.
+* Typewriter strike effect.
+* Number dial effect.
+* Background change. 
+* Whatever you can think of...
 
 ### Spelling Correction
 
-By default Shabdawali find for words longer than 4 letters, and randomly apply typo effect on maximum 1 word per sentence. Here is the configuration;
+By default Shabdawali looks for words longer than 4 letters, and randomly applies typo effects on a maximum of 1 word per sentence. Here is the configuration:
 
 ```js
 {
@@ -108,28 +108,28 @@ By default Shabdawali find for words longer than 4 letters, and randomly apply t
 }
 ```
 
-You can override `checkIfFitsForTypoEffect(word)` to apply your logic to check if shabdawali whould apply typo effect on current word.
+You can override `checkIfFitsForTypoEffect(word)` to apply your logic to check if shabdawali would apply typo effects on current word.
 
-Currently Shabdawali shuffle the letters of a word randomly to apply typo effect. But you can change this behavior by overriding `makeTypo()`.
+Currently Shabdawali shuffles the letters of a word randomly to apply typo effects. But you can change this behavior by overriding `makeTypo()`.
 
 **Some ideas**
 
 * Apply typo effect on particular words or particular lines.
-* Apply typo effect only on particular tye of words.
-* Apply the effects like
-    * missing vowels,
-    * shuffle only 2-3 letters,
-    * writing wrong spelling or similar words
-    * writing completely wrong sentences
-    * writing slang and then star/mask them
-    * whatever you can think
+* Apply typo effect only on particular type of words.
+* Apply the effects like;
+    * missing vowels.
+    * shuffle only 2-3 letters.
+    * writing wrong spelling or similar words.
+    * writing completely wrong sentences.
+    * writing slang and then star/mask them.
+    * whatever you can think of...
 
 
-### Replacable
+### Replaceable
 
-When you don't want to make a sentence longer and don't want your reader to read the same sentence again-n-again, you can set `replacable: true` to delete only uncommon part.
+When you don't want to make a sentence longer and don't want your reader to read the same sentence again-n-again, you can set `replaceable: true` to delete only uncommon parts.
 
-Eg
+E.g:
 
 ```
 "I have worked in India"
@@ -139,7 +139,7 @@ Eg
 
 ### Playback
 
-You can pause/resume the animation whenever you want
+You can pause/resume the animation whenever you want:
 
 ```js
 var amit = shabdawali(..);
@@ -178,7 +178,7 @@ amit.resume(); //resume previously paused typing
 </slate>
 ```
 
-## Reat component
+## React component
 
 ```js
 //-- check https://github.com/amitguptagwl/shabdawali for more detail
@@ -189,7 +189,7 @@ class Slate extends React.Component {
   }
   
   componentDidMount () {
-      var props = { lines: [ "शब्दावली (shabdawali)", "It can be used as react component as well"]
+      var props = { lines: [ "शब्दावली (shabdawali)", "It can be used as a React component as well"]
     };
     shabdawali(this.el, props);
   }
