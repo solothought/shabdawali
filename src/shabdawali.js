@@ -231,9 +231,24 @@ Shabdawali.prototype.typeText = function(cLine){
                 //this.element.textContent  += char;
                 this.element.textContent  = cLine.substr( 0, this.currentLetterIndex  );
                 var that = this;
-                setTimeout(function() {
+                if(char == ' ')
+                {
+                    var prevSpaceIndex = cLine.lastIndexOf(' ', this.currentLetterIndex - 2);
+                    if(prevSpaceIndex == -1)
+                    {
+                        prevSpaceIndex = 0;
+                    }
+                    var prevWord = cLine.substr(prevSpaceIndex, this.currentLetterIndex- prevSpaceIndex);
+                    setTimeout(function() {
+                        that.typeText(cLine);
+                        }, 50 * prevWord.length );
+                }
+                else
+                {
+                    setTimeout(function() {
                     that.typeText(cLine);
-                }, this.speed );
+                    }, this.speed );
+                }
             }
 
         }
