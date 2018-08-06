@@ -10,19 +10,19 @@
 ## Features
 
 * Amazing human-like typing effects beyond your imagination.
-* It finds typos, and corrects them.
+* It does typo, and corrects them.
 * Small size **[1.5k](https://bundlephobia.com/result?p=shabdawali@2.1.0)**.
 * No dependency.
 * CPU friendly.
 * Dynamic speed and pauses to type/delete sentences.
 * Can be used as a jQuery plugin, React component, or with other libraries.
 * You can fully control it's behavior.
-* You can use it for playing music notes, typing demos, typing posts on DevRant, Twitter and Github.
+* You can use it for playing music notes, typing demos, typing posts on devRant, Twitter and Github.
 * Check http://amitkumargupta.work for a live demo.
 
 # How to use
 
-You can either install it through npm or directly from js in the [dist](dist) folder or from [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
+You can either install it through npm ,or download js from dist [dist](dist) folder or directly refer to [CDN](https://unpkg.com/shabdawali@2.0.0/dist/shabdawali.js).
 
 ```bash
 npm i shabdawali
