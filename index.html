@@ -37,6 +37,9 @@
 
                                 <input type="checkbox" id="check-keySound" name="check-keySound" checked>
                                 <label for="check-keySound">Play keypress sound.</label>
+
+                                <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
+                                <label for="check-dynamicPause">Dynamic pauses</label>
                             </p>
 
                             <ul id="keyboard" style="bottom: 0px">
@@ -138,6 +141,7 @@
                     replacable : true,
                     cursorEffect : true,
                     typoEffect: true,
+                    dynamicPause: true,
                     repeat: false,
                     onCharChange : function(char){
                         if ($("#check-keySound").prop("checked")){
@@ -193,6 +197,15 @@
                     else
                         descriptionTyper.hideCursor();
                 });
+
+                //allow user to choose whether or not they want dynamicPause
+                $("#check-dynamicPause").on("click",function(){
+                    var checkBox = $("#check-dynamicPause");
+                    if(checkBox.prop("checked"))
+                        descriptionTyper.dynamicPause = true;
+                    else
+                    descriptionTyper.dynamicPause = false;
+                }) 
             });            
 
         </script>
