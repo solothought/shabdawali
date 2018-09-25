@@ -193,10 +193,6 @@
                 // allow user to check whether to display blinking cursor or not. 
                 var showCursor = false;
                 $("#btn-blinkCursor").on("click", function() {
-                    /*if (showCursor)
-                        descriptionTyper.showCursor();
-                    else
-                        descriptionTyper.hideCursor();*/
                     (showCursor) ? descriptionTyper.showCursor() : descriptionTyper.hideCursor();
                     showCursor = !showCursor;
                 });
@@ -204,12 +200,8 @@
                 //allow user to choose whether or not they want dynamicPause
                 var dynPause = false;
                 $("#btn-dynamicPause").on("click",function(){
-                    /*if(dynPause)
-                        descriptionTyper.dynamicPause = true;
-                    else
-                        descriptionTyper.dynamicPause = false;*/
                     (dynPause) ? descriptionTyper.dynamicPause = true : descriptionTyper.dynamicPause = false;
-                }) 
+                }); 
             });            
 
         </script>
