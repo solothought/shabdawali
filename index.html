@@ -190,7 +190,7 @@
                 descriptionTyper.start();
                 
                 // allow user to check whether to display blinking cursor or not. 
-                var showCursor = true;
+                var showCursor = false;
                 $("#btn-blinkCursor").on("click", function() {
                     if (showCursor)
                         descriptionTyper.showCursor();
@@ -200,7 +200,7 @@
                 });
 
                 //allow user to choose whether or not they want dynamicPause
-                var dynPause = true;
+                var dynPause = false;
                 $("#btn-dynamicPause").on("click",function(){
                     if(dynPause)
                         descriptionTyper.dynamicPause = true;
