@@ -32,16 +32,10 @@
                         <div>
                             <!-- display blinking cursor checkbox. -->
                             <p>
-                                <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
-                                <label for="check-blinkCursor">Display Blinking Cursor.</label>
                                 <button type="button" id="btn-blinkCursor" class="btn btn-outline-dark">Display Blinking Curson</button>
 
-                                <input type="checkbox" id="check-keySound" name="check-keySound">
-                                <label for="check-keySound">Play keypress sound.</label>
                                 <button type="button" id="btn-blinkCursor" class="btn btn-outline-dark">Play Keypress Sound</button>
 
-                                <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
-                                <label for="check-dynamicPause">Dynamic pauses</label>
                                 <button type="button" id="btn-blinkCursor" class="btn btn-outline-dark">Dynamic Pauses</button>
                             </p>
 
@@ -138,6 +132,11 @@
 
             var descriptionTyper;
             $(document).ready(function(){
+                var keySound = false;
+                $('#btn-keySound').on('click', () => {
+                    keySound = !keySound;
+                }
+                
                 descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
 
                     lines: description,
@@ -147,9 +146,8 @@
                     dynamicPause: true,
                     repeat: false,
                     onCharChange : function(char){
-                        if ($("#check-keySound").prop("checked")){
-                            document.getElementById('audio').play();
-                        }
+                        if (keySound) document.getElementById('audio').play();
+                        
                         $("#keyboard .keyPressed").removeClass("keyPressed");
                         if(lettersWithShift.indexOf(char) !== -1){
                             $("#keyboard li.left-shift").addClass("keyPressed");
@@ -192,22 +190,22 @@
                 descriptionTyper.start();
                 
                 // allow user to check whether to display blinking cursor or not. 
-                $("#check-blinkCursor").on("click", function() {
-                    var checkBox = $("#check-blinkCursor");
-                    var cursor = $("#blinking-cursor");
-                    if (checkBox.prop("checked"))
+                var showCursor = true;
+                $("#btn-blinkCursor").on("click", function() {
+                    if (showCursor)
                         descriptionTyper.showCursor();
                     else
                         descriptionTyper.hideCursor();
+                    showCursor = !showCursor;
                 });
 
                 //allow user to choose whether or not they want dynamicPause
-                $("#check-dynamicPause").on("click",function(){
-                    var checkBox = $("#check-dynamicPause");
-                    if(checkBox.prop("checked"))
+                var dynPause = true;
+                $("#btn-dynamicPause").on("click",function(){
+                    if(dynPause)
                         descriptionTyper.dynamicPause = true;
                     else
-                    descriptionTyper.dynamicPause = false;
+                        descriptionTyper.dynamicPause = false;
                 }) 
             });            
 
