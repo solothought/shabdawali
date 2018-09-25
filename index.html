@@ -24,11 +24,7 @@
                     <div class="col-12 d-flex justify-content-center align-items-center">
                         <p style="font-size: 2.2em; text-align: center;">
                             <span id="shabdawali"></span>
-                            
-                            <!-- Added blinking cursor effect -->
-                            <span id="blinking-cursor">|</span>
                         </p>
-                        
                     </div>
                 </div>
                 <div class="row" style="height: 45%">
@@ -38,6 +34,12 @@
                             <p>
                                 <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
                                 <label for="check-blinkCursor">Display Blinking Cursor.</label>
+
+                                <input type="checkbox" id="check-keySound" name="check-keySound" checked>
+                                <label for="check-keySound">Play keypress sound.</label>
+
+                                <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
+                                <label for="check-dynamicPause">Dynamic pauses</label>
                             </p>
 
                             <ul id="keyboard" style="bottom: 0px">
@@ -100,6 +102,10 @@
                     </div>
                 </div>
             </div>
+
+            <audio id="audio" controls style="display:none">
+                <source src="static/media/typewriter_key_sound3.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+            </audio>
         
         <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
@@ -130,11 +136,17 @@
             var descriptionTyper;
             $(document).ready(function(){
                 descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
+
                     lines: description,
                     replacable : true,
+                    cursorEffect : true,
                     typoEffect: true,
+                    dynamicPause: true,
                     repeat: false,
                     onCharChange : function(char){
+                        if ($("#check-keySound").prop("checked")){
+                            document.getElementById('audio').play();
+                        }
                         $("#keyboard .keyPressed").removeClass("keyPressed");
                         if(lettersWithShift.indexOf(char) !== -1){
                             $("#keyboard li.left-shift").addClass("keyPressed");
@@ -146,9 +158,16 @@
                         }else if(char === "CR"){
                             $("#keyboard li.return").addClass("keyPressed");
                         }else{
-                            if(char.indexOf("'") === -1) 
+                            if(char.indexOf("'") === -1) {
                                 $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
-                        }
+
+                                /* if (descriptionTyper.currentLineIndex === 11) {
+                                    $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.webm" style="display: none;">');
+                                } else if ($('#audio').length) {
+                                    $('#audios').remove();
+                                } */
+                            }                               
+                        }  
 
                         setTimeout(function(){
                             $("#keyboard .keyPressed").removeClass("keyPressed");
@@ -174,62 +193,21 @@
                     var checkBox = $("#check-blinkCursor");
                     var cursor = $("#blinking-cursor");
                     if (checkBox.prop("checked"))
-                        cursor.show();
+                        descriptionTyper.showCursor();
                     else
-                        cursor.hide();
-                });
-            });
-
-            
-
-            /* var mylines = [
-                'Welcome to शब्दावली (shabdawali)',
-                'शब्दावली (shabdawali) can help you to decorate your page and posts with amazing typing effects',
-                'You can modify the effect with different options',
-            ];
-
-
-            var mylines2 = [
-                '<b>This<b> is another instance',
-                'शब्दावली (shabdawali) supports multiple instances, dynamic speed, delete and backspacing effects',
-                'and callbacks',
-            ];
-
-            var mylines3 = [
-                'My name is Amit Gupta',
-                'I love to work with Regular expressions',
-                'I love to work with SQL queries',
-                'I love to work with algorithms',
-                'And I feel bored to work on maintenance projects',
-            ];
-
-            $(document).ready(function(){
-                var targetEl = document.getElementById("typingBox");
-                var targetEl2 = document.getElementById("typingBox2");
-                var targetEl3 = document.getElementById("commonText");
-
-                var first = shabdawali(targetEl,{
-                    lines : mylines,
-                    onCharChange : function(ch){
-                        $("#letter").text(ch);
-                    },
-                    speed : 100,
-                    nextWord : function(w){
-                        //console.log(w);
-                    },
-                    typoEffect : true
-                });
-                var second = shabdawali(targetEl2,{lines : mylines2});
-                var thrid = shabdawali(targetEl3,{
-                    lines : mylines3,
-                    replacable : true
+                        descriptionTyper.hideCursor();
                 });
 
-                first.start();
-                second.start();
-                thrid.start();
+                //allow user to choose whether or not they want dynamicPause
+                $("#check-dynamicPause").on("click",function(){
+                    var checkBox = $("#check-dynamicPause");
+                    if(checkBox.prop("checked"))
+                        descriptionTyper.dynamicPause = true;
+                    else
+                    descriptionTyper.dynamicPause = false;
+                }) 
+            });            
 
-            }) */
         </script>
     </body>
 </html>

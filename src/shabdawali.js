@@ -20,6 +20,7 @@ function Shabdawali(targetEl, opts){
     this.delay = opts.delay || 0; //initial delay
 
     this.typoEffect = opts.typoEffect || false;
+    this.dynamicPause = opts.dynamicPause || false;
 
     this.deleteSpeed = opts.deleteSpeed || (this.speed / 2);
     this.deleteSpeedArr = [];
@@ -36,6 +37,10 @@ function Shabdawali(targetEl, opts){
     }else{
         this.deleteEffect = true;
     }
+
+    this.appendCursor(this.element);
+
+    opts.cursorEffect ? this.showCursor() : this.hideCursor();
 
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
@@ -76,8 +81,11 @@ function Shabdawali(targetEl, opts){
 
     this.events = {
         "pause" : [],
-        "resume" : []
+        "resume" : [],
+        "finish" : []
     }
+
+    
 }
 
 //Check if the given word should be used for spelling correction effects
@@ -224,13 +232,57 @@ Shabdawali.prototype.typeText = function(cLine){
                 //this.element.textContent  += char;
                 this.element.textContent  = cLine.substr( 0, this.currentLetterIndex  );
                 var that = this;
-                setTimeout(function() {
+                if(this.dynamicPause && char == ' ') {
+                    var prevSpaceIndex = cLine.lastIndexOf(' ', this.currentLetterIndex - 2);
+                    if(prevSpaceIndex == -1){
+                        prevSpaceIndex = 0;
+                    }
+                    var prevWord = cLine.substr(prevSpaceIndex, this.currentLetterIndex- prevSpaceIndex);
+                    var complexity = wordComplexity(prevWord); 
+                    complexity = complexity == 1? 1 : complexity * (prevWord.length/2);
+                    setTimeout(function() {
+                        that.typeText(cLine);
+                        },this.speed * complexity );
+                }
+                else {
+                    setTimeout(function() {
                     that.typeText(cLine);
-                }, this.speed );
+                    }, this.speed );
+                }
             }
 
         }
     }
+}
+/*
+Complexity will have values ranging from 1-4,
+where '1' will have no complexity and the value
+of complexity will increase by one for each of 
+the conditions satisfied
+*/
+var wordComplexity = function(word){
+    var complexity = 1;
+    if(word.length > 10){
+        complexity++;
+    }
+    if(word.substr(word.length-1,1)=='!' || word.substr(word.length-1,1)=='.' || word.substr(word.length-1,1)==';'){
+        complexity++;
+    }
+    if(countConsonants(word) > 5){
+        complexity++;
+    }
+    return complexity;
+}
+
+var countConsonants = function(word){
+    var numberOfConsonants = 0;
+    for(var index = 0; index < word.length; index ++) {
+        var vowels = ["a","e","i","o","u"];
+        if(vowels.indexOf(word.charAt(index).toLowerCase()) < 0){
+            numberOfConsonants++;
+        }
+    }
+    return numberOfConsonants;
 }
 
 Shabdawali.prototype.nextLine = function(){
@@ -244,7 +296,7 @@ Shabdawali.prototype.nextLine = function(){
 }
 
 Shabdawali.prototype.typeNext = function(){
-    if(this.playCount === 0){
+    if(this.playCount === 0){//automatic pause when start or resume is called with line number
         this.pause();
         var that = this;
         this._pauseCallBack = function() {
@@ -267,6 +319,10 @@ Shabdawali.prototype.typeNext = function(){
             that.typeText(line) ;
         }, this.pauseBeforeNext)
     );
+
+    if(!line){//nothing to play
+        this._emit("finish");
+    }
 }
 
 Shabdawali.prototype._emit = function(eventName){
@@ -278,7 +334,20 @@ Shabdawali.prototype.on = function(eventName, fn){
     this.events[eventName].push(fn);
 }
 
+Shabdawali.prototype.appendCursor = function(){
+    this.cursorEl = document.createElement('span');
+    this.cursorEl.classList.add('shabdawali-cursor');
+    this.cursorEl.textContent = '|';
+    this.element.insertAdjacentElement('afterend', this.cursorEl);
+}
 
+Shabdawali.prototype.hideCursor = function(){
+    this.cursorEl.style.display = "none";
+}
+
+Shabdawali.prototype.showCursor = function(){
+    this.cursorEl.style.display = "inline";
+}
 
 module.exports = function(targetEl, opts){
     return new Shabdawali(targetEl, opts);
