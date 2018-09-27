@@ -227,17 +227,13 @@
               }
 
               loadDescriptionTyper();
-                
-                $("#btn-keySound").click(function() {
-                    //$(this).toggleClass("btn-outline-secondary btn-outline-dark");
-                    alert(this);
-                });
 
               // allow user to check whether to display blinking cursor or not. 
                 var showCursor = false;
                 $("#btn-blinkCursor").on("click", function() {
                     (showCursor) ? descriptionTyper.showCursor() : descriptionTyper.hideCursor();
                     showCursor = !showCursor;
+                    alert("hi");
                 });
                 //allow user to choose whether or not they want dynamicPause
                 var dynPause = false;
