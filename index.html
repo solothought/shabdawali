@@ -227,6 +227,10 @@
               }
 
               loadDescriptionTyper();
+                
+                $("#btn-keySound #btn-blinkCursor #btn-dynamicPause").click(function() {
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
+                });
 
               // allow user to check whether to display blinking cursor or not. 
                 var showCursor = false;
