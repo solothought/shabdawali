@@ -167,13 +167,6 @@
             $(document).ready(function(){
                 // toggle Keypress sound on button click.
                 var keySound = false;
-                $('#btn-keySound').on('click', () => {
-                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
-                    $(this).text(function(i, t){
-                        return t === "Keypress Sound" ? "Stop Sound" : "Keypress Sound";
-                    });
-                    //keySound = !keySound;
-                });
 
               function loadDescriptionTyper(){
                   $("#shabdawali").html("");
@@ -231,6 +224,14 @@
               }
 
               loadDescriptionTyper();
+                
+                $('#btn-keySound').on('click', () => {
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
+                    $(this).text(function(i, t){
+                        return t === "Keypress Sound" ? "Stop Sound" : "Keypress Sound";
+                    });
+                    //keySound = !keySound;
+                });
 
               // allow user to check whether to display blinking cursor or not. 
                 var showCursor = false;
