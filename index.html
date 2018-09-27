@@ -168,11 +168,11 @@
                 // toggle Keypress sound on button click.
                 var keySound = false;
                 $('#btn-keySound').on('click', () => {
-                    keySound = !keySound;
                     $(this).toggleClass("btn-outline-secondary btn-outline-dark");
                     $(this).text(function(i, t){
                         return t === "Keypress Sound" ? "Stop Sound" : "Keypress Sound";
                     });
+                    keySound = !keySound;
                 });
 
               function loadDescriptionTyper(){
