@@ -30,16 +30,41 @@
                 <div class="row" style="height: 45%">
                     <div class="col-12 d-flex justify-content-center align-items-end" >
                         <div>
-                            <!-- display blinking cursor checkbox. -->
                             <p>
-                                <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
-                                <label for="check-blinkCursor">Display Blinking Cursor.</label>
-
-                                <input type="checkbox" id="check-keySound" name="check-keySound">
-                                <label for="check-keySound">Play keypress sound.</label>
-
-                                <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
-                                <label for="check-dynamicPause">Dynamic pauses</label>
+                                <div class="row"> <!--Added Table to aligning the checkboxes and button-->
+                                    <div class="col-4 pr-0">
+                                        <!-- display blinking cursor checkbox. -->
+                                        <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
+                                        <label for="check-blinkCursor">Display Blinking Cursor.</label>
+                                    </div>
+                                    <div class="col-3 pl-0 pr-0">
+                                        <input type="checkbox" id="check-keySound" name="check-keySound">
+                                        <label for="check-keySound">Play keypress sound.</label>
+                                    </div>
+                                    <div class="col-3 pl-3 pr-0">
+                                        <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
+                                        <label for="check-dynamicPause">Dynamic pauses</label>
+                                    </div>
+                                    <div class="col-2 pl-0 pr-0">
+                                        <button class="btn btn-primary" id="btn-user-input">Edit Text</button>
+                                    </div>
+                                </div>
+                                <div class="modal" id="userInputModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header justify-content-between">
+                                              <h4 class="modal-title">Edit</h4>
+                                              <button type="button" class="close">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <textarea class="form-control" rows="13" style="border:none; resize:none;" id="custom-input"></textarea>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button class="btn btn-primary" id="btnCloseModal">Save and Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </p>
 
                             <ul id="keyboard" style="bottom: 0px">
@@ -98,7 +123,7 @@
                                 <li class="right-shift lastitem"><span>shift</span></li>
                                 <li class="space lastitem"  ><span for="ch ">&nbsp;</span></li>
                             </ul>
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -106,7 +131,7 @@
             <audio id="audio" controls style="display:none">
                 <source src="static/media/typewriter_key_sound3.mp3" type="audio/mpeg"> Your browser does not support the audio element.
             </audio>
-        
+
         <!--         <div id="typingBox" spellcheck="true"></div>
         <div>
             <textarea id="typingBox2" spellcheck="true"></textarea>
@@ -135,78 +160,103 @@
 
             var descriptionTyper;
             $(document).ready(function(){
-                descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
 
-                    lines: description,
-                    replacable : true,
-                    cursorEffect : true,
-                    typoEffect: true,
-                    dynamicPause: true,
-                    repeat: false,
-                    onCharChange : function(char){
-                        if ($("#check-keySound").prop("checked")){
-                            document.getElementById('audio').play();
-                        }
-                        $("#keyboard .keyPressed").removeClass("keyPressed");
-                        if(lettersWithShift.indexOf(char) !== -1){
-                            $("#keyboard li.left-shift").addClass("keyPressed");
-                        }
-                        if(char === "BS"){
-                            $("#keyboard li.delete").addClass("keyPressed");
-                        }else if(char === "DEL"){
-                            $("#keyboard li.delete").addClass("keyPressed");
-                        }else if(char === "CR"){
-                            $("#keyboard li.return").addClass("keyPressed");
-                        }else{
-                            if(char.indexOf("'") === -1) {
-                                $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
+              function loadDescriptionTyper(){
+                  $("#shabdawali").html("");
+                  descriptionTyper = shabdawali( document.getElementById("shabdawali"), {
 
-                                /* if (descriptionTyper.currentLineIndex === 11) {
-                                    $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.webm" style="display: none;">');
-                                } else if ($('#audio').length) {
-                                    $('#audios').remove();
-                                } */
-                            }                               
-                        }  
+                      lines: description,
+                      replacable : true,
+                      cursorEffect : true,
+                      typoEffect: true,
+                      dynamicPause: true,
+                      repeat: false,
+                      onCharChange : function(char){
+                          if ($("#check-keySound").prop("checked")){
+                              document.getElementById('audio').play();
+                          }
+                          $("#keyboard .keyPressed").removeClass("keyPressed");
+                          if(lettersWithShift.indexOf(char) !== -1){
+                              $("#keyboard li.left-shift").addClass("keyPressed");
+                          }
+                          if(char === "BS"){
+                              $("#keyboard li.delete").addClass("keyPressed");
+                          }else if(char === "DEL"){
+                              $("#keyboard li.delete").addClass("keyPressed");
+                          }else if(char === "CR"){
+                              $("#keyboard li.return").addClass("keyPressed");
+                          }else{
+                              if(char.indexOf("'") === -1) {
+                                  $("[for='ch"+char+"']").parent("li").addClass("keyPressed");
 
-                        setTimeout(function(){
-                            $("#keyboard .keyPressed").removeClass("keyPressed");
-                        },500);
-                    },
-                    onLineChange : function(){
-                        $("#keyboard li.return").addClass("keyPressed");
-                        setTimeout(function(){
-                            $("#keyboard .keyPressed").removeClass("keyPressed");
-                        },400);
-                    },
-                } );
+                                  /* if (descriptionTyper.currentLineIndex === 11) {
+                                      $('#audios').append('<iframe id="audio" allow="autoplay" src="static/media/keyboardTap.webm" style="display: none;">');
+                                  } else if ($('#audio').length) {
+                                      $('#audios').remove();
+                                  } */
+                              }
+                          }
 
-                descriptionTyper.checkIfFitsForTypoEffect = function(word){
-                    //if(word === "correct" || ( Math.floor((Math.random() * 3) + 1) !== 2 && word.length > 7) )
-                    if(word.trim() === "correct" )
-                        return true;
-                }
-                descriptionTyper.start();
-                
-                // allow user to check whether to display blinking cursor or not. 
-                $("#check-blinkCursor").on("click", function() {
-                    var checkBox = $("#check-blinkCursor");
-                    var cursor = $("#blinking-cursor");
-                    if (checkBox.prop("checked"))
-                        descriptionTyper.showCursor();
-                    else
-                        descriptionTyper.hideCursor();
-                });
+                          setTimeout(function(){
+                              $("#keyboard .keyPressed").removeClass("keyPressed");
+                          },500);
+                      },
+                      onLineChange : function(){
+                          $("#keyboard li.return").addClass("keyPressed");
+                          setTimeout(function(){
+                              $("#keyboard .keyPressed").removeClass("keyPressed");
+                          },400);
+                      },
+                  } );
 
-                //allow user to choose whether or not they want dynamicPause
-                $("#check-dynamicPause").on("click",function(){
-                    var checkBox = $("#check-dynamicPause");
-                    if(checkBox.prop("checked"))
-                        descriptionTyper.dynamicPause = true;
-                    else
-                    descriptionTyper.dynamicPause = false;
-                }) 
-            });            
+                  descriptionTyper.checkIfFitsForTypoEffect = function(word){
+                      //if(word === "correct" || ( Math.floor((Math.random() * 3) + 1) !== 2 && word.length > 7) )
+                      if(word.trim() === "correct" )
+                          return true;
+                  }
+                  descriptionTyper.start();
+              }
+
+              loadDescriptionTyper();
+
+              // allow user to check whether to display blinking cursor or not.
+              $("#check-blinkCursor").on("click", function() {
+                  var checkBox = $("#check-blinkCursor");
+                  var cursor = $("#blinking-cursor");
+                  if (checkBox.prop("checked"))
+                      descriptionTyper.showCursor();
+                  else
+                      descriptionTyper.hideCursor();
+              });
+
+              //allow user to choose whether or not they want dynamicPause
+              $("#check-dynamicPause").on("click",function(){
+                  var checkBox = $("#check-dynamicPause");
+                  if(checkBox.prop("checked"))
+                      descriptionTyper.dynamicPause = true;
+                  else
+                  descriptionTyper.dynamicPause = false;
+              });
+
+              $('#btn-user-input').on('click', function () {
+                $("#custom-input").val(description.join("\n"));
+                descriptionTyper.pause();
+                $("#userInputModal").show();
+              });
+
+              $('#btnCloseModal').on('click', function () {
+                description = $("#custom-input").val().split("\n");
+                $(".shabdawali-cursor").remove()
+                $("#userInputModal").hide();
+                descriptionTyper.stop();
+                loadDescriptionTyper();
+              });
+
+              $('.close').on('click', function () {
+                $("#userInputModal").hide();
+                descriptionTyper.resume();
+              });
+            });
 
         </script>
     </body>
