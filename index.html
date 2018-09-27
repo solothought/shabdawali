@@ -169,6 +169,7 @@
                 var keySound = false;
                 $('#btn-keySound').on('click', () => {
                     keySound = !keySound;
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
                 });
 
               function loadDescriptionTyper(){
@@ -233,12 +234,13 @@
                 $("#btn-blinkCursor").on("click", function() {
                     (showCursor) ? descriptionTyper.showCursor() : descriptionTyper.hideCursor();
                     showCursor = !showCursor;
-                    alert("hi");
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
                 });
                 //allow user to choose whether or not they want dynamicPause
                 var dynPause = false;
                 $("#btn-dynamicPause").on("click",function(){
                     (dynPause) ? descriptionTyper.dynamicPause = true : descriptionTyper.dynamicPause = false;
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
                 }); 
 
               $('#btn-user-input').on('click', function () {
