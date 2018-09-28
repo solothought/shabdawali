@@ -12,6 +12,9 @@
                 #shabdawali {
                     font-family: 'Open Sans Condensed', sans-serif;
                 }
+                .m5 {
+                    margin-right: 5px;
+                }
             </style>
     </head>
     <body>
@@ -31,22 +34,12 @@
                     <div class="col-12 d-flex justify-content-center align-items-end" >
                         <div>
                             <p>
-                                <div class="row"> <!--Added Table to aligning the checkboxes and button-->
-                                    <div class="col-4 pr-0">
-                                        <!-- display blinking cursor checkbox. -->
-                                        <input type="checkbox" id="check-blinkCursor" name="check-blinkCursor" checked>
-                                        <label for="check-blinkCursor">Display Blinking Cursor.</label>
-                                    </div>
-                                    <div class="col-3 pl-0 pr-0">
-                                        <input type="checkbox" id="check-keySound" name="check-keySound">
-                                        <label for="check-keySound">Play keypress sound.</label>
-                                    </div>
-                                    <div class="col-3 pl-3 pr-0">
-                                        <input type="checkbox" id="check-dynamicPause" name="check-dynamicPause" checked>
-                                        <label for="check-dynamicPause">Dynamic pauses</label>
-                                    </div>
-                                    <div class="col-2 pl-0 pr-0">
-                                        <button class="btn btn-primary" id="btn-user-input">Edit Text</button>
+                                <div class="row"> <!--  aligning the buttons -->
+                                    <div class="col-12">
+                                            <button type="button" id="btn-blinkCursor" class="btn btn-outline-dark m5">Show Cursor</button>
+                                            <button type="button" id="btn-keySound" class="btn btn-outline-dark m5">Keypress Sound</button>
+                                            <button type="button" id="btn-dynamicPause" class="btn btn-outline-dark m5">Dynamic Pauses</button>
+                                            <button id="btn-user-input" class="btn btn-primary m5">Edit Text</button>
                                     </div>
                                 </div>
                                 <div class="modal" id="userInputModal">
@@ -160,6 +153,8 @@
 
             var descriptionTyper;
             $(document).ready(function(){
+                // toggle Keypress sound on button click.
+                var keySound = false;
 
               function loadDescriptionTyper(){
                   $("#shabdawali").html("");
@@ -172,9 +167,8 @@
                       dynamicPause: true,
                       repeat: false,
                       onCharChange : function(char){
-                          if ($("#check-keySound").prop("checked")){
-                              document.getElementById('audio').play();
-                          }
+                          if (keySound) document.getElementById('audio').play();
+                        
                           $("#keyboard .keyPressed").removeClass("keyPressed");
                           if(lettersWithShift.indexOf(char) !== -1){
                               $("#keyboard li.left-shift").addClass("keyPressed");
@@ -218,25 +212,34 @@
               }
 
               loadDescriptionTyper();
+                
+                $('#btn-keySound').on('click', function() {
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
+                    $(this).text(function(i, t){
+                        return t === "Keypress Sound" ? "Stop Sound" : "Keypress Sound";
+                    });
+                    keySound = !keySound;
+                });
 
-              // allow user to check whether to display blinking cursor or not.
-              $("#check-blinkCursor").on("click", function() {
-                  var checkBox = $("#check-blinkCursor");
-                  var cursor = $("#blinking-cursor");
-                  if (checkBox.prop("checked"))
-                      descriptionTyper.showCursor();
-                  else
-                      descriptionTyper.hideCursor();
-              });
-
-              //allow user to choose whether or not they want dynamicPause
-              $("#check-dynamicPause").on("click",function(){
-                  var checkBox = $("#check-dynamicPause");
-                  if(checkBox.prop("checked"))
-                      descriptionTyper.dynamicPause = true;
-                  else
-                  descriptionTyper.dynamicPause = false;
-              });
+              // allow user to check whether to display blinking cursor or not. 
+                var showCursor = false;
+                $("#btn-blinkCursor").on("click", function() {
+                    (showCursor) ? descriptionTyper.showCursor() : descriptionTyper.hideCursor();
+                    showCursor = !showCursor;
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
+                    $(this).text(function(i, t){
+                        return t === "Show Cursor" ? "Hide Cursor" : "Show Cursor";
+                    });
+                });
+                //allow user to choose whether or not they want dynamicPause
+                var dynPause = false;
+                $("#btn-dynamicPause").on("click",function(){
+                    (dynPause) ? descriptionTyper.dynamicPause = true : descriptionTyper.dynamicPause = false;
+                    $(this).toggleClass("btn-outline-secondary btn-outline-dark");
+                    $(this).text(function(i, t){
+                        return t === "Dynamic Pauses" ? "Stop Pauses" : "Dynamic Pauses";
+                    });
+                }); 
 
               $('#btn-user-input').on('click', function () {
                 $("#custom-input").val(description.join("\n"));
