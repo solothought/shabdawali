@@ -20,7 +20,7 @@
     "piano",
     "keypad",
     "event",
-    "replace", 
+    "replace",
     "delete",
     "erase",
     "remove",
@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/amitguptagwl/shabdawali#readme",
   "devDependencies": {
-    "browserify": "^16.2.2",
+    "browserify": "^16.2.3",
     "uglify-js": "^3.4.6"
   }
 }
