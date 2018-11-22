@@ -14,7 +14,7 @@ function Shabdawali(targetEl, opts){
 
     this.speed = opts.typingSpeed || 70;
     this.timeToReadAWord = 80;
-    this.dynamicPauseBeforeDelete = opts.dynamicPauseBeforeDelete || true; 
+    this.dynamicPauseBeforeDelete = opts.dynamicPauseBeforeDelete || false; 
     this.pauseBeforeDelete = opts.pauseBeforeDelete || 2000; 
     this.pauseBeforeNext = opts.pauseBeforeNext || 1000; 
     this.delay = opts.delay || 0; //initial delay
