@@ -208,3 +208,9 @@ ReactDOM.render(
   document.getElementById('slat')
 );
 ```
+
+## Worth to check 
+
+- **[BigBit standard)](https://github.com/amitguptagwl/bigbit)** : A standard to reprent any number in the universe in comparitively less space and without precision loss. A standard to save space to represent any text string in comparision of UTF encoding.
+- **[imglab](https://github.com/NaturalIntelligence/imglab)** : Speedup and simplify image labeling / annotation. Supports multiple formats, one click annotation, easy 
+- **[ वार्ता (vaarta)](https://github.com/amitguptagwl/vaarta/)** : Human like chatting effects.

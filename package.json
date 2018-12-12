@@ -1,6 +1,6 @@
 {
   "name": "shabdawali",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Amazing human like typping effects with typo, events, dynamic speed and more",
   "main": "src/shabdawali.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "jquery",
     "native"
   ],
-  "author": "Amit Kumar Gupta",
+  "author": "Amit Kumar Gupta (http://amitkumargupta.work)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/amitguptagwl/shabdawali/issues"
@@ -46,6 +46,6 @@
   "homepage": "https://github.com/amitguptagwl/shabdawali#readme",
   "devDependencies": {
     "browserify": "^16.2.3",
-    "uglify-js": "^3.4.6"
+    "uglify-js": "^3.4.9"
   }
 }

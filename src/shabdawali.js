@@ -37,10 +37,13 @@ function Shabdawali(targetEl, opts){
     }else{
         this.deleteEffect = true;
     }
-
-    this.appendCursor(this.element);
-
-    opts.cursorEffect ? this.showCursor() : this.hideCursor();
+    
+    if(opts.cursorEffect){
+        this.appendCursor(this.element);
+        this.showCursor();
+    } else{
+        this.hideCursor();
+    }
 
     if(opts.deleteFrom === "start"){
         this.trimmedText = function(text,len){ return text.substring(1); }
