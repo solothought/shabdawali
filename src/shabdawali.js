@@ -39,9 +39,11 @@ function Shabdawali(targetEl, opts){
     }
     
     if(opts.cursorEffect){
+        this.cursorEffect = true;
         this.appendCursor(this.element);
         this.showCursor();
     } else{
+        this.cursorEffect = false;
         this.hideCursor();
     }
 
@@ -345,11 +347,11 @@ Shabdawali.prototype.appendCursor = function(){
 }
 
 Shabdawali.prototype.hideCursor = function(){
-    this.cursorEl.style.display = "none";
+    if(this.cursorEffect)  this.cursorEl.style.display = "none";
 }
 
 Shabdawali.prototype.showCursor = function(){
-    this.cursorEl.style.display = "inline";
+    if(this.cursorEffect) this.cursorEl.style.display = "inline";
 }
 
 module.exports = function(targetEl, opts){
