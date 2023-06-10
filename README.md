@@ -18,7 +18,7 @@
 * Can be used as a jQuery plugin, React component, or with other libraries.
 * You can fully control it's behavior.
 * You can use it for playing music notes, typing demos, typing posts on devRant, Twitter and Github.
-* Check http://amitkumargupta.work for a live demo.
+* Check [live demo](https://solothought.com/shabdawali/).
 
 
 # How to use
